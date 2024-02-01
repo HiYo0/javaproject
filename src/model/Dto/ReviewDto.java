@@ -1,11 +1,11 @@
 package model.Dto;
 
 public class ReviewDto {
-    private int review_pk;
-    private int target;
-    private int writer;
-    private String content;
-    private int score;
+    private int review_pk; // 리뷰번호 primary key
+    private int target; // 대상
+    private int writer; // 쓴사람
+    private String content; // 내용
+    private int score; // 점수
 
     public ReviewDto(){}
 

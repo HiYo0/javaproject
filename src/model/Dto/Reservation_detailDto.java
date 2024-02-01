@@ -1,9 +1,9 @@
 package model.Dto;
 
 public class Reservation_detailDto {
-    private int reservation_detail_pk;
-    private int reservation_pk;
-    private int reservation_date_pk;
+    private int reservation_detail_pk; // 예약상세 primary key
+    private int reservation_pk; // (fk) 예약번호
+    private int reservation_date_pk; // (fk) 예약날짜
 
     public Reservation_detailDto(){}
 

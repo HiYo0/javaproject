@@ -1,10 +1,10 @@
 package model.Dto;
 
 public class ReservationDto {
-    private int reservation_pk;
-    private int member_pk;
-    private int reservation_people;
-    private int reservation_status;
+    private int reservation_pk; // 예약번호 primary key
+    private int member_pk; // (fk) 예약한 사람 회원번호
+    private int reservation_people; // 예약할 인원
+    private int reservation_status; // 예약 상태 0:승인대기 1:승인완료 2:취소
 
     public ReservationDto(){}
 
