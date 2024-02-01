@@ -1,11 +1,11 @@
 package model.Dto;
 
 public class HouseDto {
-    private int house_pk;
-    private String houseName;
-    private int member_pk;
-    private String region;
-    private int maxPeople;
+    private int house_pk; // 숙소 table pk  *****1000000부터 시작
+    private String houseName; // 숙소 이름
+    private int member_pk; // (fk) 숙소를 등록한 회원번호
+    private String region; // 숙소 지역
+    private int maxPeople; // 숙소 수용 최대인원
 
     public HouseDto(){}
     public HouseDto(int house_pk, String houseName, int member_pk, String region, int maxPeople) {

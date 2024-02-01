@@ -1,10 +1,10 @@
 package model.Dto;
 
 public class Reservation_dateDto {
-    private int resrvation_date_pk;
-    private String reservation_date;
-    private int house_pk;
-    private int day_price;
+    private int resrvation_date_pk; // 예약 날짜 primary key
+    private String reservation_date; // 예약 날짜 '0000-00-00'        ****수정필요 db에는 datetime임
+    private int house_pk; // (fk) 숙소번호
+    private int day_price; // 1박당 가격
 
     public Reservation_dateDto(){}
     public Reservation_dateDto(int resrvation_date_pk, String reservation_date, int house_pk, int day_price) {
