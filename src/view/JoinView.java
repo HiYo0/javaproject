@@ -31,6 +31,7 @@ public class JoinView {
 
         // 저장 후 control에 전달
         boolean result = Control_member.getInstance().login(memberDto);
+        System.out.println(" = " +memberDto );
 
         // 결과 출력
         if(result){

@@ -14,7 +14,7 @@ public class Member_Dao extends Dao {//class start
     public boolean join(MemberDto memberDto){
         try {
             // 1. SQL 작성
-            String sql = "insert into member( mid , mpw , memail, mphone, mname ) values( ?, ?, ?, ?, ? ) ";
+            String sql = "insert into member(mid , mpw , memail, mphone, mname ) values(?, ?, ?, ?, ? ) ";
             // 2. SQL 기재한다.
             ps = conn.prepareStatement(sql);
             // 3. SQL ? 매개변수 있을경우 ? 에 값을 대입한다.
