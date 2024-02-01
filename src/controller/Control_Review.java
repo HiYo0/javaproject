@@ -1,5 +1,9 @@
 package controller;
 
+import model.Dto.ReviewDto;
+
+import java.util.ArrayList;
+
 public class Control_Review {//class start
 
 
@@ -12,6 +16,15 @@ public class Control_Review {//class start
     // ex ->
     // // 회원가입
     // public String 메소드명(){return "String";}
+
+    // 전승호 start--------------------------------------
+    public boolean review_write() {
+        return false;
+    }
+//    public ArrayList<ReviewDto> my_view(){
+//        return ;
+//    }
+    // 전승호 end------------------------------------
 
 
 

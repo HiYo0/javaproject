@@ -1,5 +1,11 @@
 package controller;
 
+import model.Dao.Host_Dao;
+import model.Dto.HouseDto;
+import model.Dto.Reservation_dateDto;
+
+import java.util.ArrayList;
+
 public class Control_Host {//class start
 
 
@@ -13,6 +19,14 @@ public class Control_Host {//class start
     // // 회원가입
     // public String 메소드명(){return "String";}
 
+
+    // 전승호 =======================================================
+    public ArrayList<HouseDto> my_house_list (String id){
+        // 로그인된 호스트 아이디 주고 유저가 등록한 숙소리스트 받기
+
+        return Host_Dao.getInstance().my_house_list(id);
+    }
+    // 전승호 END ====================================================
 
 
 }//class end
