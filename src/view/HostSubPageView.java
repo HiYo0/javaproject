@@ -52,6 +52,7 @@ public class HostSubPageView {
 
         HouseDto houseDto = new HouseDto( 0,name, 0, region, people);
         // int result = Control_Host.getInstance().
+        //
     }
 
 }
