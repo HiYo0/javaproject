@@ -36,9 +36,15 @@ public class Host_Dao extends Dao{// class start
 
                 my_house_list.add(houseDto);
             }
-            for (int i = 0; i < my_house_list.size(); i++) {
+            int 회원번호 = login_number(id);
+            ArrayList<HouseDto> 스왑용 = new ArrayList<>();
 
-            }
+            for (int i = 0; i < my_house_list.size(); i++) {
+                if (my_house_list.get(i).getHouse_pk()==회원번호){
+                    스왑용.add(my_house_list.get(i));
+                }
+            }//for end
+            my_house_list = 스왑용;
 
             return my_house_list;
         }catch (Exception e){
@@ -46,16 +52,17 @@ public class Host_Dao extends Dao{// class start
         }
         return null;// 없음
     }
-    public int login_number (String id){ // 이것은 아이디를 받아서 아이디에 해당하는 회원번호를 찾는 메소드
+    // ID 받아서 회원번호로 반납해주는 메소드
+    public int login_number (String id){
         try {
             // 1. sql 작성한다
-            String sql = "select * from member where mid = '아이디넣는곳';";
+            String sql = "select member_pk from member where mid = '"+id+"';";
             // 2. sql 기재한다
             ps = conn.prepareStatement(sql);
             // 3. sql 실행한다.
             rs = ps.executeQuery();
             // 4. sql 결과처리
-            return 3;
+            return rs.getInt(1);
         }catch (Exception e) {
             System.out.println("오류"+e);
         }
