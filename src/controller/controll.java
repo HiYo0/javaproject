@@ -2,6 +2,7 @@ package controller;
 
 public class controll {//class start
 
+
     // 싱글톤
     private controll(){}
     private static controll controll = new controll();
