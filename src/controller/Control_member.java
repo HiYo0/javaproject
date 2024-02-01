@@ -4,7 +4,7 @@ import model.Dao.Member_Dao;
 import model.Dto.MemberDto;
 
 public class Control_member {//class start
-
+    private String login_id = "";
 
     // 싱글톤
     private Control_member(){}
@@ -38,5 +38,11 @@ public class Control_member {//class start
 
 
 
+    public String getLogin_id() {
+        return login_id;
+    }
 
+    public void setLogin_id(String login_id) {
+        this.login_id = login_id;
+    }
 }//class end

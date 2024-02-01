@@ -11,5 +11,6 @@ public class HostPageView {
     public void run(){
         System.out.println("1.숙소관리 | 2.리뷰관리 | 3.돌아가기");
 
+
     }
 }
