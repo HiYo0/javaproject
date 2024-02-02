@@ -16,7 +16,7 @@ public class Review_Dao extends Dao{//class start
     public ArrayList<Guest_ReviewDto> my_house_Review(int ch){
         try {
             // 1. sql 작성한다
-            String sql = "";
+            String sql = "select * from guest_review where target = "+ch+";";
             // 2. sql 기재한다
             ps = conn.prepareStatement(sql);
             // 3. sql 실행한다.
@@ -26,11 +26,11 @@ public class Review_Dao extends Dao{//class start
 
             while (rs.next()){//DB house 데이터 다 가져오기
                 Guest_ReviewDto guest_reviewDto = new Guest_ReviewDto();
-//                member_reviewDto.setHouse_pk(rs.getInt(7));
-//                member_reviewDto.setHouseName(rs.getString(8));
-//                member_reviewDto.setMember_pk(rs.getInt(1));
-//                member_reviewDto.setRegion(rs.getString(10));
-//                member_reviewDto.setMaxPeople(rs.getInt(11));
+                guest_reviewDto.setReview_pk(rs.getInt(1));
+                guest_reviewDto.setTarget(rs.getInt(2));
+                guest_reviewDto.setWriter(rs.getInt(3));
+                guest_reviewDto.setContent(rs.getString(4));
+                guest_reviewDto.setScore(rs.getInt(5));
 
                 house_review_list.add(guest_reviewDto);
             }

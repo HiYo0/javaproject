@@ -18,6 +18,10 @@ public class Host_Review_Command {//class start
     public static Host_Review_Command getInstance(){return review_command;}
 
 
+    public static void main(String[] args) {// 테스트용
+        Host_Review_Command.getInstance().run();
+    }//테스트용
+
     public void run(){
         Scanner scanner = new Scanner(System.in);
         String id = "noname1";/*Control_member.getInstance().getLogin_id();*/
@@ -39,14 +43,18 @@ public class Host_Review_Command {//class start
             try {
                 System.out.print("선택 > ");
                 ch = scanner.nextInt();
-                // 선택받은 번호를 하우스 식별번호로 변경하는 코드
-                for (int i = 0; i < my_house_list.size(); i++) {
-                    if ((ch - 1) == i) {
-                        ch = my_house_list.get(i).getHouse_pk();
-                        break;
-                    }
+                if (ch<my_house_list.size()+1) { //있는 번호중에서만 선택할수있게 하기
+                    // 선택받은 번호를 하우스 식별번호로 변경하는 코드
+                    for (int i = 0; i < my_house_list.size(); i++) {
+                        if ((ch - 1) == i) {
+                            ch = my_house_list.get(i).getHouse_pk();
+                            break;
+                        }
+                    }//for end
+                    break;
+                }else {
+                    System.out.println("해당 선택번호는 없습니다.");
                 }
-                break;
             } catch (InputMismatchException e) {
                 System.out.println("숫자입력해주세요");
                 scanner.next();
@@ -55,6 +63,17 @@ public class Host_Review_Command {//class start
 
         // 내가 등록한 house 에 대한 리뷰 들고오기
         ArrayList<Guest_ReviewDto> my_house_Review = Control_Review.getInstance().my_house_Review(ch);//리뷰출력할 객체받아오기
+        double score = 0;
+        for (int i = 0; i < my_house_Review.size(); i++) {
+            score += my_house_Review.get(i).getScore();
+        }
+        // 평균구하기
+        score = Math.round(score/my_house_Review.size()); //Math.round = 소숫점 첫째자리까지 반올림 시킴
+
+        System.out.println("평균="+score);
+
+        System.out.println("==================================================================");
+        System.out.printf(" %2s\t%-12s %-15s %-4s \t\t%2s\n","번호","식별번호","이름","지역","최대인원");
         // 매개변수 = 하우스 식별번호(ch)
 
 
