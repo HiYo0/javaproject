@@ -1,5 +1,10 @@
 package controller;
 
+import model.Dao.Guest_Dao;
+import model.Dto.ReservationDto;
+
+import java.util.ArrayList;
+
 public class Control_Guest {//class start
 
 
@@ -13,6 +18,10 @@ public class Control_Guest {//class start
     // // 회원가입
     // public String 메소드명(){return "String";}
 
-
+    public ArrayList<ReservationDto> reservationList(){
+        System.out.println("control 호출");
+        ArrayList<ReservationDto> result= Guest_Dao.getInstance().reservationList();
+        return result;
+    }
 
 }//class end
