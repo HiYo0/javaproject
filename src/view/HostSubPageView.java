@@ -2,6 +2,7 @@ package view;
 
 import controller.Control_Host;
 import model.Dto.HouseDto;
+import model.Dto.Reservation_dateDto;
 
 import java.util.Scanner;
 
@@ -50,9 +51,14 @@ public class HostSubPageView {
         System.out.println("최대인원 :");       int people = scanner.nextInt();
         System.out.println("1박당 가격 :");     int price = scanner.nextInt();
 
+        // house table DB 추가용 객체
         HouseDto houseDto = new HouseDto( 0,name, 0, region, people);
-        // int result = Control_Host.getInstance().
-        //
+
+        // reservation_data DB 추가용 객체
+        Reservation_dateDto reservation_dateDto = new Reservation_dateDto(0, date, 0, price);
+
+        boolean result = Control_Host.getInstance().insertHouse(houseDto, reservation_dateDto);
+        // result 처리문 추가 필요
     }
 
 }
