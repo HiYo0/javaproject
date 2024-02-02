@@ -26,7 +26,22 @@ public class Control_Host {//class start
 
         return Host_Dao.getInstance().my_house_list(id);
     }
-    // 전승호 END ====================================================
+
+
+
+    // 오승택 =======================================================
+    public boolean insertHouse(HouseDto houseDto, Reservation_dateDto reservation_dateDto){
+        boolean result  = false;
+
+        // Host_Dao 에서 반환받은 결과값
+        result = Host_Dao.getInstance().insertHouse(houseDto, reservation_dateDto);
+
+        if(result){
+            System.out.println("House 등록 완료");
+        }
+        return result;
+    }
+    // 오승택 END ====================================================
 
 
 }//class end
