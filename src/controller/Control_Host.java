@@ -21,9 +21,9 @@ public class Control_Host {//class start
 
 
     // 전승호 =======================================================
-    public ArrayList<HouseDto> my_house_list (String id){
-        // 로그인된 호스트 아이디 주고 유저가 등록한 숙소리스트 받기
 
+    // 로그인된 호스트 아이디 주고 유저가 등록한 숙소리스트 받기
+    public ArrayList<HouseDto> my_house_list (String id){
         return Host_Dao.getInstance().my_house_list(id);
     }
     // 전승호 END ====================================================

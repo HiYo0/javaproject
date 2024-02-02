@@ -15,10 +15,12 @@ public class Host_Dao extends Dao{// class start
 
 
     // 전승호 =================================================================
+    // id에 해당하는 houst 리스트 가져오기
     public ArrayList<HouseDto> my_house_list (String id) {
         try {
+            int id_no = login_number(id);
             // 1. sql 작성한다
-            String sql = "select * from House;";
+            String sql = "select * from member inner join house on member.member_pk = house.member_pk && member.member_pk ="+id_no+";";
             // 2. sql 기재한다
             ps = conn.prepareStatement(sql);
             // 3. sql 실행한다.
@@ -28,27 +30,18 @@ public class Host_Dao extends Dao{// class start
 
             while (rs.next()){//DB house 데이터 다 가져오기
                 HouseDto houseDto = new HouseDto();
-                houseDto.setHouse_pk(rs.getInt(1));
-                houseDto.setHouseName(rs.getString(2));
-                houseDto.setMember_pk(rs.getInt(3));
-                houseDto.setRegion(rs.getString(4));
-                houseDto.setMaxPeople(rs.getInt(5));
+                houseDto.setHouse_pk(rs.getInt(7));
+                houseDto.setHouseName(rs.getString(8));
+                houseDto.setMember_pk(rs.getInt(1));
+                houseDto.setRegion(rs.getString(10));
+                houseDto.setMaxPeople(rs.getInt(11));
 
                 my_house_list.add(houseDto);
             }
-            int 회원번호 = login_number(id);
-            ArrayList<HouseDto> 스왑용 = new ArrayList<>();
-
-            for (int i = 0; i < my_house_list.size(); i++) {
-                if (my_house_list.get(i).getHouse_pk()==회원번호){
-                    스왑용.add(my_house_list.get(i));
-                }
-            }//for end
-            my_house_list = 스왑용;
 
             return my_house_list;
         }catch (Exception e){
-            System.out.println("오류"+e);
+            System.out.println("my_house_list 오류"+e);
         }
         return null;// 없음
     }
@@ -62,9 +55,10 @@ public class Host_Dao extends Dao{// class start
             // 3. sql 실행한다.
             rs = ps.executeQuery();
             // 4. sql 결과처리
-            return rs.getInt(1);
+            if(rs.next())
+                return rs.getInt("member_pk");
         }catch (Exception e) {
-            System.out.println("오류"+e);
+            System.out.println("login_number 오류"+e);
         }
         return 0;
     }
