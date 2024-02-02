@@ -3,11 +3,9 @@ package view;
 
 import controller.Control_Host;
 import controller.Control_Review;
-import controller.Control_member;
 import model.Dto.Guest_ReviewDto;
 import model.Dto.HouseDto;
-import model.Dto.Reservation_dateDto;
-import model.Dto.ReviewDto;
+
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -20,11 +18,6 @@ public class Host_Review_Command {//class start
     public static Host_Review_Command getInstance(){return review_command;}
 
 
-    /*테스트main*/
-//    public static void main(String[] args) {
-//        Host_Review_Command.getInstance().run();
-//    }
-    /*테스트 main*/
     public void run(){
         Scanner scanner = new Scanner(System.in);
         String id = "noname1";/*Control_member.getInstance().getLogin_id();*/
