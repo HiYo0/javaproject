@@ -57,7 +57,7 @@ public class HostSubPageView {
         // reservation_data DB 추가용 객체
         Reservation_dateDto reservation_dateDto = new Reservation_dateDto(0, date, 0, price);
 
-        boolean result = Control_Host.getInstance().insertHouse(houseDto, reservation_dateDto);
+//        boolean result = Control_Host.getInstance().insertHouse(houseDto, reservation_dateDto);
         // result 처리문 추가 필요
     }
 

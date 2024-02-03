@@ -27,7 +27,7 @@ public class Control_member {//class start
             return 1;
         }
         // 3. 회원가입 요청
-        result = Member_Dao.getInstance().join( memberDto ); // 샘플
+        result = Member_Dao.getInstance().join( memberDto );
         // 2. 반환
         return result;
     }
@@ -45,6 +45,14 @@ public class Control_member {//class start
             loginMno = Member_Dao.getInstance().findMno(  memberDto.getMid()  );
         }
         // 반환
+        return result;
+    }
+
+    // ================================ 아이디찾기 ================================ //
+    public String SearchId(MemberDto memberDto){
+        // 저장 후 dao에 전달
+        String result = Member_Dao.getInstance().SearchId(memberDto);
+
         return result;
     }
 

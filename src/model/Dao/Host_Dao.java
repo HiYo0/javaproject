@@ -67,42 +67,42 @@ public class Host_Dao extends Dao{// class start
 
     // 오승택 =================================================================
 
-    public boolean insertHouse(HouseDto houseDto, Reservation_dateDto reservation_dateDto){
-
-        try{
-            int member_pk = 0;
-            String sql = "";
-            String id = Control_member.getInstance().getLogin_id();
-
-            // member 테이블에서 member_pk를 먼저 받아오기
-            sql = "select member_pk from member where mid = ?;";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, id);
-            rs = ps.executeQuery();
-            if(rs.next()){
-                member_pk = rs.getInt("member_pk");
-            }
-
-            // member_pk를 먼저 받아와서 오류검사 > house 테이블에 넣기
-            sql = "insert into house(houseName, member_pk, region, maxPeople) values(?, ?, ?, ?)";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, houseDto.getHouseName());
-            ps.setInt(2, member_pk);
-            ps.setString(3, houseDto.getRegion());
-            ps.setInt(4, houseDto.getMaxPeople());
-
-            // reservation_date, house_pk, day_price
-            // house_pk를 먼저 받아와서 테이블에 넣어야함
-
-
-            if(ps.executeUpdate() == 1){
-                return true;
-            }
-        }catch (Exception e){
-            System.out.println(e +"DB오류");
-        }
-        return false;
-    }
+//    public boolean insertHouse(HouseDto houseDto, Reservation_dateDto reservation_dateDto){
+//
+//        try{
+//            int member_pk = 0;
+//            String sql = "";
+//            String id = Control_member.getInstance().getLogin_id();
+//
+//            // member 테이블에서 member_pk를 먼저 받아오기
+//            sql = "select member_pk from member where mid = ?;";
+//            ps = conn.prepareStatement(sql);
+//            ps.setString(1, id);
+//            rs = ps.executeQuery();
+//            if(rs.next()){
+//                member_pk = rs.getInt("member_pk");
+//            }
+//
+//            // member_pk를 먼저 받아와서 오류검사 > house 테이블에 넣기
+//            sql = "insert into house(houseName, member_pk, region, maxPeople) values(?, ?, ?, ?)";
+//            ps = conn.prepareStatement(sql);
+//            ps.setString(1, houseDto.getHouseName());
+//            ps.setInt(2, member_pk);
+//            ps.setString(3, houseDto.getRegion());
+//            ps.setInt(4, houseDto.getMaxPeople());
+//
+//            // reservation_date, house_pk, day_price
+//            // house_pk를 먼저 받아와서 테이블에 넣어야함
+//
+//
+//            if(ps.executeUpdate() == 1){
+//                return true;
+//            }
+//        }catch (Exception e){
+//            System.out.println(e +"DB오류");
+//        }
+//        return false;
+//    }
     // 오승택END ================================================================
 
 }//class end

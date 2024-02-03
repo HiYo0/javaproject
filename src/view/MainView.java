@@ -25,7 +25,9 @@ public class MainView {
             else if (ch==2) {
                 LoginView.getInstance().login();
             }
-            else if (ch==3) {}
+            else if (ch==3) {
+                SearchId.getInstance().SearchId();
+            }
             else if (ch==4) {}
             else {
                 System.out.println("올바른 숫자를 입력해주세요.");
