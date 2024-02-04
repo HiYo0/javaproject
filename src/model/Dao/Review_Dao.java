@@ -1,6 +1,7 @@
 package model.Dao;
 
 import model.Dto.Guest_ReviewDto;
+import model.Dto.ReviewWrite_View_Dto;
 
 
 import java.util.ArrayList;
@@ -38,9 +39,69 @@ public class Review_Dao extends Dao{//class start
             return house_review_list;
         }catch (Exception e){
             System.out.println("my_house_list 오류"+e);
+
         }
         return null;
     }
+    // 하우스 식벽번호 -> 하우스 이름반환
+    public String house_name (int ch){
+        try {
+            String sql = "select * from house where house_pk = " + ch + ";";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            // 처리
+            String name = "";
+            if(rs.next()){
+                name=rs.getString("houseName");
+            }
+            return name;
+        }catch (Exception e){
+            System.out.println("house_name 오류"+e);
+        }
+
+        return "";
+    }
+
+    // 작성자 식별번호 -> 이름으로 반환
+    public String writer_name (int writer){
+        try {
+            String sql = "select * from member where member_pk = "+writer+";";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            // 처리
+            String name = "";
+            if(rs.next()){
+                name=rs.getString("mname");
+            }
+            return name;
+        }catch (Exception e){
+            System.out.println("house_name 오류"+e);
+        }
+        return "";
+    }
+
+    // 리뷰 작성할수 있는 거 찾아오기
+    public ArrayList<ReviewWrite_View_Dto>review_write_view(){
+        try {
+            String sql = "select * from member where member_pk = ;";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            // 처리
+            String name = "";
+            if(rs.next()){
+                name=rs.getString("mname");
+            }
+            ArrayList<ReviewWrite_View_Dto> review_write_view = new ArrayList<>();
+            return review_write_view;
+
+        }catch (Exception e){
+            System.out.println("review_write_view 오류"+e);
+        }
+
+        return null;
+    }
+
+
 
 
     // 전승호 end------------------------------------

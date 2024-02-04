@@ -2,6 +2,7 @@ package controller;
 
 import model.Dao.Review_Dao;
 import model.Dto.Guest_ReviewDto;
+import model.Dto.ReviewWrite_View_Dto;
 
 import java.util.ArrayList;
 
@@ -25,10 +26,32 @@ public class Control_Review {//class start
         return Review_Dao.getInstance().my_house_Review(ch);
     }
 
+
+    // 하우스 식별번호로 하우스이름 받아오기
+    public String house_name (int ch){
+        return Review_Dao.getInstance().house_name(ch);
+    }
+    // 작성자 식별번호로 작성자이름 받아오기
+    public String writer_name(int writer){
+        return  Review_Dao.getInstance().writer_name(writer);
+    }
+
+    // 리뷰 상태가 3인 리뷰 불러오기
+    // 1. reservation_date 에서 내 house가 포함된 거 찾기
+    // 2. house 중 reservation_status 가 1인거 찾아오기
+    // 3. reservation_status 가 1인거중 member / 내숙소이름 /이용날짜 가져오기
+    public ArrayList<ReviewWrite_View_Dto> review_write_view(){
+
+        return Review_Dao.getInstance().review_write_view();
+
+    }
+
     // 리뷰쓰기
     public boolean review_write(){
         return false;
     }
+
+
     // 전승호 end------------------------------------
 
 

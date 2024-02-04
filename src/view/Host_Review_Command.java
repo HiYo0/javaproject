@@ -5,6 +5,7 @@ import controller.Control_Host;
 import controller.Control_Review;
 import model.Dto.Guest_ReviewDto;
 import model.Dto.HouseDto;
+import model.Dto.ReviewWrite_View_Dto;
 
 
 import java.util.ArrayList;
@@ -67,27 +68,39 @@ public class Host_Review_Command {//class start
         for (int i = 0; i < my_house_Review.size(); i++) {
             score += my_house_Review.get(i).getScore();
         }
-        // 평균구하기
+            // 평균구하기
         score = Math.round(score/my_house_Review.size()); //Math.round = 소숫점 첫째자리까지 반올림 시킴
+            // 하우스식별번호로 이름 받아오기
+        String house_name = Control_Review.getInstance().house_name(ch);
 
-        System.out.println("평균="+score);
 
-        System.out.println("==================================================================");
-        System.out.printf(" %2s\t%-12s %-15s %-4s \t\t%2s\n","번호","식별번호","이름","지역","최대인원");
+        System.out.println("==========================="+house_name+" 에 등록된 리뷰"+"=============================");
+        System.out.println("평균 평점 ="+score);
+        System.out.printf(" %2s\t %-15s    %-29s \t %2s\n","번호","작성자","내용","평점");
+        for (int i = 0; i < my_house_Review.size(); i++) {
+            // 작성자 번호로 작성자 이름 가져오기
+            String writer_name = Control_Review.getInstance().writer_name(my_house_Review.get(i).getWriter()).charAt(0)+"***";
+            String content = my_house_Review.get(i).getContent(); // 내용
+            int point = my_house_Review.get(i).getScore(); // 점수
+            System.out.printf(" %2d\t\t %-15s %-30s \t %2d\n",i+1,writer_name,content,point);
+        }
+
+        System.out.println("===========================================================================");
         // 매개변수 = 하우스 식별번호(ch)
 
 
-
-
         while (true) { // while start
-            System.out.println("\n\n============== 기능을 선택해주세요 ==============");
+            System.out.println("\n\n============== 리뷰기능을 선택해주세요 ==============");
             System.out.println("1.리뷰등록 | 2.리뷰수정 | 3.리뷰삭제 | 4.돌아가기");
             System.out.print("선택(1~4) > ");
             try {
                 int choice = scanner.nextInt();
 
-
                 if (choice == 1) {//리뷰등록
+                    // member 이용한 멤버 가져오기
+                    ArrayList<ReviewWrite_View_Dto> review_write_view = Control_Review.getInstance().review_write_view();
+                    // member / 내숙소이름 /이용날짜 가져오기
+
 
                     if (Control_Review.getInstance().review_write()) {
                         System.out.println("안내]리뷰등록에 성공했습니다.");
