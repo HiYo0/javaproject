@@ -16,9 +16,8 @@ public class HostSubPageView {
         // 스캐너 선언
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("1.숙소등록 | 2.숙소수정 | 3.숙소삭제 | 4.돌아가기");
-
         while (true){
+            System.out.println("1.숙소등록 | 2.숙소수정 | 3.숙소삭제 | 4.돌아가기");
             int ch = scanner.nextInt(); // 1.숙소등록 | 2.숙소수정 | 3.숙소삭제 | 4.돌아가기
 
             if(ch == 1){ // 숙소등록
@@ -47,7 +46,8 @@ public class HostSubPageView {
 
         System.out.println("숙소이름 :");      String name = scanner.next();
         System.out.println("지역 :");         String region = scanner.next();
-        System.out.println("날짜 :");         String date = scanner.next();
+        System.out.println("시작날짜 ex)0000-00-00 :");         String date = scanner.next();
+        System.out.println("몇박 하시겠습니까? : "); int day = scanner.nextInt();
         System.out.println("최대인원 :");       int people = scanner.nextInt();
         System.out.println("1박당 가격 :");     int price = scanner.nextInt();
 
@@ -57,8 +57,11 @@ public class HostSubPageView {
         // reservation_data DB 추가용 객체
         Reservation_dateDto reservation_dateDto = new Reservation_dateDto(0, date, 0, price);
 
-//        boolean result = Control_Host.getInstance().insertHouse(houseDto, reservation_dateDto);
-        // result 처리문 추가 필요
+        boolean result = Control_Host.getInstance().insertHouse(houseDto, reservation_dateDto, day);
+
+        if(result){
+            System.out.println("숙소 등록이 완료되었습니다.");
+        }
     }
 
 }
