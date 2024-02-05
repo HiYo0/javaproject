@@ -99,6 +99,14 @@ public class Guest_Dao extends Dao{
             //sql 실행
             int count= ps.executeUpdate();
 
+            if(count==0){
+                System.out.println("존재하지 않는 예약내역입니다.");
+                return false;
+            }
+
+            //예약성공
+            return true;
+
         }
         catch (Exception e){
             System.out.println("[오류] : "+e);
@@ -107,12 +115,22 @@ public class Guest_Dao extends Dao{
         return false;
     }
 
-    //예약내역 상태 출력 함수(매개변수 : 예약번호)
+    //예약 상태 출력 함수(매개변수 : 예약번호)
     public int findReservationStatus(int reservation_pk){
         try {
             String sql = "select reservation_status from reservation where reservation_pk=?";
             //sql 기재
             ps = conn.prepareStatement(sql);
+            //매개변수 대입
+            ps.setInt(1,reservation_pk);
+            //sql실행
+            rs=ps.executeQuery();
+            //예약번호에 해당하는 정보는 하나의 레코드
+            rs.next();
+            int result=rs.getInt("reservation_status");
+
+            //반환
+            return result;
         }
         catch(Exception e){
             System.out.println("[오류] : "+e);
