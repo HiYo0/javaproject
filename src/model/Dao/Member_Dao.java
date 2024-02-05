@@ -79,7 +79,7 @@ public class Member_Dao extends Dao {//class start
 
 
     // ================================ 아이디를 이용한 회원번호 찾기 ================================ //
-    // 왜 ?? 회원번호 찾지  // 로그인 상태 회원번호로 식별
+    // 로그인 상태 회원번호로 식별
     public int findMno( String mid ){
         try {
             // SQL 작성
@@ -102,10 +102,7 @@ public class Member_Dao extends Dao {//class start
     }
 
     // ================================ 아이디 찾기 ================================ //
-    /*
-         아이디찾기 > 이름, 전화번호 받아서 일치하면 아아디 호출
-         결과값 뭘로 줄건데? 불리언 트루 펄스
-    */
+
     public String SearchId (MemberDto memberDto){
         try {
             // SQL 작성
@@ -119,6 +116,28 @@ public class Member_Dao extends Dao {//class start
             rs = ps.executeQuery(); // 실행
             while(rs.next()){
                 return rs.getString("mid"); //get타입.필드명
+            }
+            // SQL 결과
+        }catch ( Exception e ){  System.out.println(e);   } // SQL 문제 발생.
+        // 6. 함수종료
+        return null;
+    }
+
+    // ================================ 비밀번호 찾기 ================================ //
+
+    public String SearchPw (MemberDto memberDto){
+        try {
+            // SQL 작성
+            String sql = "select mpw from member where mid = ? and memail = ?";
+            // SQL 기재
+            ps = conn.prepareStatement(sql);
+            // SQL 대입
+            ps.setString(1, memberDto.getMid());
+            ps.setString(2, memberDto.getMemail());
+            // SQL 실행
+            rs = ps.executeQuery(); // 실행
+            while(rs.next()){
+                return rs.getString("mpw"); //get타입.필드명
             }
             // SQL 결과
         }catch ( Exception e ){  System.out.println(e);   } // SQL 문제 발생.

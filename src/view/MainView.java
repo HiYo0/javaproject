@@ -13,9 +13,9 @@ public class MainView {
         while (true) {
             Scanner scanner = new Scanner(System.in);
             // 기능 선택하기
-            System.out.println("======================================");
-            System.out.println("1.회원가입 | 2.로그인 | 3.아이디찾기 | 4.비밀번호찾기");
-            System.out.println("======================================");
+            System.out.println("===============================================");
+            System.out.println("1.회원가입 | 2.로그인 | 3.아이디찾기 | 4.비밀번호찾기 ");
+            System.out.println("===============================================");
             System.out.print("기능을 선택해 주세요(1~4) => ");
             int ch = scanner.nextInt();
 
@@ -28,7 +28,11 @@ public class MainView {
             else if (ch==3) {
                 SearchId.getInstance().SearchId();
             }
-            else if (ch==4) {}
+            else if (ch==4) {
+                SearchPw.getInstance().SearchPw();
+            }
+            else if (ch==5) {}
+            else if (ch==6) {}
             else {
                 System.out.println("올바른 숫자를 입력해주세요.");
             }
