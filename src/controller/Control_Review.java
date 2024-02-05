@@ -37,9 +37,8 @@ public class Control_Review {//class start
     }
 
     // 리뷰 상태가 3인 리뷰 불러오기
-    // 1. reservation_date 에서 내 house가 포함된 거 찾기
-    // 2. house 중 reservation_status 가 1인거 찾아오기
-    // 3. reservation_status 가 1인거중 member / 내숙소이름 /이용날짜 가져오기
+        // 1. reservation 에서 status 가 1 인거의 reservation_pk 찾아오기
+        // 2. 찾아온 reservation_pk 로 house 식별번호 찾아오기 (이용한 숙소 정보)
     public ArrayList<ReviewWrite_View_Dto> review_write_view(){
 
         return Review_Dao.getInstance().review_write_view();

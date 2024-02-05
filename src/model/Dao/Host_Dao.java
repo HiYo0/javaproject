@@ -18,6 +18,7 @@ public class Host_Dao extends Dao{// class start
     // 전승호 =================================================================
     // id에 해당하는 houst 리스트 가져오기
     public ArrayList<HouseDto> my_house_list (String id) {
+        ArrayList<HouseDto> my_house_list = new ArrayList<>();// house 데이터의집
         try {
             int id_no = login_number(id);
             // 1. sql 작성한다
@@ -27,7 +28,7 @@ public class Host_Dao extends Dao{// class start
             // 3. sql 실행한다.
             rs = ps.executeQuery();
             // 4. sql 결과처리
-            ArrayList<HouseDto> my_house_list = new ArrayList<>();// house 데이터의집
+
 
             while (rs.next()){//DB house 데이터 다 가져오기
                 HouseDto houseDto = new HouseDto();
@@ -44,7 +45,7 @@ public class Host_Dao extends Dao{// class start
         }catch (Exception e){
             System.out.println("my_house_list 오류"+e);
         }
-        return null;// 없음
+        return my_house_list;// 없음
     }
     // ID 받아서 회원번호로 반납해주는 메소드
     public int login_number (String id){

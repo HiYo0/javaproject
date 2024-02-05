@@ -40,31 +40,33 @@ public class Host_Review_Command {//class start
         System.out.println("================================================================");
         int ch = 0;
 
-        while (true) { // 한글 입력시 예외처리 하기위한 while
-            try {
-                System.out.print("선택 > ");
-                ch = scanner.nextInt();
-                if (ch<my_house_list.size()+1) { //있는 번호중에서만 선택할수있게 하기
-                    // 선택받은 번호를 하우스 식별번호로 변경하는 코드
-                    for (int i = 0; i < my_house_list.size(); i++) {
-                        if ((ch - 1) == i) {
-                            ch = my_house_list.get(i).getHouse_pk();
-                            break;
-                        }
-                    }//for end
-                    break;
-                }else {
-                    System.out.println("해당 선택번호는 없습니다.");
+        if (my_house_list.size()>=1) { // 1개의 데이터도 없으면 스킵
+            while (true) { // 한글 입력시 예외처리 하기위한 while
+                try {
+                    System.out.print("선택 > ");
+                    ch = scanner.nextInt();
+                    if (ch < my_house_list.size() + 1) { //있는 번호중에서만 선택할수있게 하기
+                        // 선택받은 번호를 하우스 식별번호로 변경하는 코드
+                        for (int i = 0; i < my_house_list.size(); i++) {
+                            if ((ch - 1) == i) {
+                                ch = my_house_list.get(i).getHouse_pk();
+                                break;
+                            }
+                        }//for end
+                        break;
+                    } else {
+                        System.out.println("해당 선택번호는 없습니다.");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("숫자입력해주세요");
+                    scanner.next();
                 }
-            } catch (InputMismatchException e) {
-                System.out.println("숫자입력해주세요");
-                scanner.next();
-            }
-        }// while end
+            }// while end
+        }// if end
 
         // 내가 등록한 house 에 대한 리뷰 들고오기
         ArrayList<Guest_ReviewDto> my_house_Review = Control_Review.getInstance().my_house_Review(ch);//리뷰출력할 객체받아오기
-        double score = 0;
+        double score = 0; // 평균점수용 변수
         for (int i = 0; i < my_house_Review.size(); i++) {
             score += my_house_Review.get(i).getScore();
         }
