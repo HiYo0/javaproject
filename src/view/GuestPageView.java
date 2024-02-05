@@ -5,6 +5,7 @@ import controller.Control_member;
 import model.Dto.ReservationDto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -47,12 +48,44 @@ public class GuestPageView {
         }
     }//m end
 
+    //예약관리 메소드
     public void reservationManagement() {
-        ArrayList<ReservationDto> result = Control_Guest.getInstance().reservationList();
+        ArrayList<HashMap<String, String>> result = Control_Guest.getInstance().reservationList();
+
+        //예약내역 출력
+        System.out.println("============= 예약내역 ===============");
+        System.out.println("예약번호\t\t예약날짜\t\t\t\t숙소이름\t\t예약인원\t\t예약상태");
         for (int i = 0; i < result.size(); i++) {
-            System.out.println(result.get(i).getReservation_pk());
-            System.out.println(result.get(i).getReservation_people());
-            System.out.println(result.get(i).getReservation_status());
+            System.out.printf("%-10s %-10s %-10s %-10s %-10s\n",
+                    result.get(i).get("reservation_pk"),
+                    result.get(i).get("reservation_date"),
+                    result.get(i).get("houseName"),
+                    result.get(i).get("reservation_people"),
+                    result.get(i).get("reservation_status"));
         }//for end
+        System.out.println("=====================================");
+
+        try {
+            //예약 관리
+            System.out.println("--- 1.예약취소 | 2.돌아가기");
+            //콘솔 입력
+            int ch = scanner.nextInt();
+            if (ch == 1) {//예약 취소
+                System.out.println("---취소하실 예약번호를 입력 해 주십시오.---");
+                int reservation_pk = scanner.nextInt();
+                //db내역 삭제 함수 호출
+                //예약상태 변경 함수 호출
+            } else if (ch == 2) {//돌아가기
+                System.out.println("---예약관리를 취소하셨습니다..---");
+                GuestPageView.getInstance().run();
+            }
+            else{
+                System.out.println("올바르지 않은 입력입니다.");
+            }
+        }
+        catch(Exception e){
+            System.out.println("올바르지 않은 입력입니다. : "+e);
+        }//t end
+
     }//m end
 }//c end

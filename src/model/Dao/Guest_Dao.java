@@ -4,6 +4,7 @@ import controller.Control_member;
 import model.Dto.ReservationDto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Guest_Dao extends Dao{
     // 싱글톤 ==============================================
@@ -36,17 +37,23 @@ public class Guest_Dao extends Dao{
     }//m end
 
     //예약현황 불러오기_예약번호, 예약인원, 예약상태
-    public ArrayList<ReservationDto> reservationList(){
+    public ArrayList<HashMap<String, String>> reservationList(){
         System.out.println("dao호출");
         //회원번호 찾기 함수 호출
         int memberNo=findMemberPk();
 
         //불러온 데이터 저장할 배열
-        ArrayList<ReservationDto> reservationDtos=new ArrayList<>();
+        ArrayList<HashMap<String, String>> reservationDtos=new ArrayList<>();
 
         try{
-            //1차 데이터 추출 sql : reservation(reservation_pk, reservation_people, reservation_status) 추출
-            String sql="select reservation_pk, reservation_people, reservation_status from reservation where member_pk=?";
+            //예약내역 추출
+            String sql="select reservation_pk, reservation_date, houseName, reservation_people, reservation_status from (\n" +
+                    "\t  select * from (select house_pk, houseName from house) as h join (\n" +
+                    "\t\tselect*from reservation_date join \n" +
+                    "\t\t\t( select * from reservation join reservation_detail using(reservation_pk) ) as a\n" +
+                    "\t\tusing(reservation_date_pk) ) as b\n" +
+                    "\t  using(house_pk) ) as c\n" +
+                    "where member_pk=?;";
             //sql 기재
             ps=conn.prepareStatement(sql);
             //매개변수 대입(현재 로그인된 아이디)
@@ -54,14 +61,19 @@ public class Guest_Dao extends Dao{
             //sql 실행
             rs=ps.executeQuery();
 
-            //불러온 데이터 reservationDto객체에 저장
+            //불러온 데이터 저장
             while(rs.next()){
-                ReservationDto reservationDto=new ReservationDto();
-                reservationDto.setReservation_pk(rs.getInt("reservation_pk"));
-                reservationDto.setReservation_people(rs.getInt("reservation_people"));
-                reservationDto.setReservation_status(rs.getInt("reservation_status"));
-                //ArrayList<ReservationDto>타입 배열에 reservationDto 대입
-                reservationDtos.add(reservationDto);
+                //hashMap 객체 생성
+                HashMap<String, String> reservationList=new HashMap<>();
+                //hashMap에 저장
+                reservationList.put("reservation_pk",String.valueOf(  rs.getInt("reservation_pk") ));
+                reservationList.put("reservation_date",String.valueOf( rs.getString( "reservation_date") ));
+                reservationList.put("houseName",String.valueOf( rs.getString( "houseName") ));
+                reservationList.put("reservation_people",String.valueOf( rs.getInt( "reservation_people") ));
+                reservationList.put("reservation_status",String.valueOf( rs.getInt("reservation_status") ));
+
+                //ArrayList에 저장
+                reservationDtos.add(reservationList);
             }
             //배열에 아무것도 저장되지 않을경우 안내문구 출력
             if (reservationDtos.size()==0){
@@ -76,29 +88,35 @@ public class Guest_Dao extends Dao{
         return null;
     }//m end
 
-    //예약현황 불러오기_날짜
-    public String reservationDateList(int Reservation_pk){
-        //추출정보 저장 배열 선언
-        ArrayList<String> dateList=new ArrayList<>();
-        try {
-            //2차 데이터 추출 sql : reservation_detail(reservation_date_pk) 추출
-            String sql = "select reservation_date from reservation_detail where reservation_pk=?";
+    //예약내역 삭제
+    public boolean deleteReservation(int reservation_pk){
+        try{
+            String sql="delete from reservation where reservation_pk=?";
             //sql 기재
             ps=conn.prepareStatement(sql);
-            //매개변수 대입(예약번호)
-            ps.setInt(1,Reservation_pk);
+            //매개변수 대입
+            ps.setInt(1,reservation_pk);
             //sql 실행
-            rs=ps.executeQuery();
+            int count= ps.executeUpdate();
 
-            //출력한 날짜번호 정보 배열에 입력
-            while(rs.next()){
-                dateList.add(rs.getString("reservation_date_pk"));
-            }
         }
         catch (Exception e){
-            System.out.println("예약날짜불러오기 오류 : "+e);
+            System.out.println("[오류] : "+e);
         }
 
-        return null;
+        return false;
+    }
+
+    //예약내역 상태 출력 함수(매개변수 : 예약번호)
+    public int findReservationStatus(int reservation_pk){
+        try {
+            String sql = "select reservation_status from reservation where reservation_pk=?";
+            //sql 기재
+            ps = conn.prepareStatement(sql);
+        }
+        catch(Exception e){
+            System.out.println("[오류] : "+e);
+        }
+        return 0;
     }
 }//c end
