@@ -1,7 +1,7 @@
 package model.Dao;
 
 import model.Dto.Guest_ReviewDto;
-import model.Dto.ReservationDto;
+import model.Dto.Host_ReviewDto;
 import model.Dto.ReviewWrite_View_Dto;
 
 
@@ -65,7 +65,7 @@ public class Review_Dao extends Dao{//class start
     }
 
     // 작성자 식별번호 -> 이름으로 반환
-    public String writer_name (int writer){
+    public String member_name(int writer){
         try {
             String sql = "select * from member where member_pk = "+writer+";";
             ps = conn.prepareStatement(sql);
@@ -85,38 +85,21 @@ public class Review_Dao extends Dao{//class start
     // 리뷰 작성할수 있는 거 찾아오기
     public ArrayList<ReviewWrite_View_Dto>review_write_view(){
         ArrayList<ReviewWrite_View_Dto> review_write_view = new ArrayList<>();
-        ArrayList<ReservationDto> reservationDtos = new ArrayList<>();
+
         try {
-            String sql = "select * from reservation where reservation_status = 1;";
+            String sql = "select * from reservation inner join reservation_detail on reservation.reservation_pk = reservation_detail.reservation_pk inner join reservation_date on reservation_date.reservation_date_pk = reservation_detail.reservation_date_pk where  reservation_status =1;";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             // 처리
             while (rs.next()){
-                ReservationDto reservationDto = new ReservationDto();
-                reservationDto.setReservation_pk(rs.getInt(1));
-                reservationDto.setMember_pk(rs.getInt(2));//회원
-                reservationDto.setReservation_people(rs.getInt(3));
-                reservationDto.setReservation_status(rs.getInt(4));//상태
+                ReviewWrite_View_Dto reviewWrite_view_dto = new ReviewWrite_View_Dto();
+                reviewWrite_view_dto.setReservation_pk(rs.getInt(1));
+                reviewWrite_view_dto.setHouse_pk(rs.getInt("house_pk"));
+                reviewWrite_view_dto.setMember_pk(rs.getInt("member_pk"));
+                reviewWrite_view_dto.setReservation_date(rs.getString("reservation_date"));
 
-                reservationDtos.add(reservationDto);
+                review_write_view.add(reviewWrite_view_dto);
             }
-            // 찾은 멤버PK 배열에 등록
-            int[] memberPk = new int[reservationDtos.size()];
-            for (int i = 0; i < reservationDtos.size(); i++) {
-                memberPk[i] = reservationDtos.get(i).getMember_pk();
-            }
-
-            String sql2 = "select * from reservation where reservation_status = 1;";
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
-
-            // 맴베 pk 로 이름 구해오기
-            String[] memberName = new String[reservationDtos.size()];
-            for (int i = 0; i < memberName.length; i++) {
-                memberName[i]=writer_name(memberPk[i]);
-            }
-
-
             return review_write_view;
 
         }catch (Exception e){
@@ -126,6 +109,10 @@ public class Review_Dao extends Dao{//class start
         return review_write_view;
     }
 
+    // 리뷰등록하기
+    public boolean review_write(Host_ReviewDto host_reviewDto){
+        return false;
+    }
 
 
 

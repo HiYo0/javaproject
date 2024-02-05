@@ -2,6 +2,7 @@ package controller;
 
 import model.Dao.Review_Dao;
 import model.Dto.Guest_ReviewDto;
+import model.Dto.Host_ReviewDto;
 import model.Dto.ReviewWrite_View_Dto;
 
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class Control_Review {//class start
         return Review_Dao.getInstance().house_name(ch);
     }
     // 작성자 식별번호로 작성자이름 받아오기
-    public String writer_name(int writer){
-        return  Review_Dao.getInstance().writer_name(writer);
+    public String member_name(int writer){
+        return  Review_Dao.getInstance().member_name(writer);
     }
 
     // 리뷰 상태가 3인 리뷰 불러오기
@@ -46,7 +47,8 @@ public class Control_Review {//class start
     }
 
     // 리뷰쓰기
-    public boolean review_write(){
+    public boolean review_write(Host_ReviewDto host_reviewDto){
+        if(Review_Dao.getInstance().review_write(host_reviewDto)){return true;}
         return false;
     }
 

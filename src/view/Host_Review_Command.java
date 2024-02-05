@@ -4,6 +4,7 @@ package view;
 import controller.Control_Host;
 import controller.Control_Review;
 import model.Dto.Guest_ReviewDto;
+import model.Dto.Host_ReviewDto;
 import model.Dto.HouseDto;
 import model.Dto.ReviewWrite_View_Dto;
 
@@ -81,7 +82,7 @@ public class Host_Review_Command {//class start
         System.out.printf(" %2s\t %-15s    %-29s \t %2s\n","번호","작성자","내용","평점");
         for (int i = 0; i < my_house_Review.size(); i++) {
             // 작성자 번호로 작성자 이름 가져오기
-            String writer_name = Control_Review.getInstance().writer_name(my_house_Review.get(i).getWriter()).charAt(0)+"***";
+            String writer_name = Control_Review.getInstance().member_name(my_house_Review.get(i).getWriter()).charAt(0)+"***";
             String content = my_house_Review.get(i).getContent(); // 내용
             int point = my_house_Review.get(i).getScore(); // 점수
             System.out.printf(" %2d\t\t %-15s %-30s \t %2d\n",i+1,writer_name,content,point);
@@ -99,16 +100,43 @@ public class Host_Review_Command {//class start
                 int choice = scanner.nextInt();
 
                 if (choice == 1) {//리뷰등록
-                    // member 이용한 멤버 가져오기
+                    // 이용한 멤버 가져오기
                     ArrayList<ReviewWrite_View_Dto> review_write_view = Control_Review.getInstance().review_write_view();
-                    // member / 내숙소이름 /이용날짜 가져오기
+                    while (true) { // 한글 입력시 예외처리 하기위한 while
+                        try {
+                            int 선택한번호 = 0;
+                            for (int i = 0; i < review_write_view.size(); i++) {
+                                System.out.println("=========================== 이용해준 사람들 =============================");
+                                System.out.printf(" %2s\t %-10s   %-5s %10s\n", "번호", "집이름", "회원명", "사용날짜");
+                                String 집이름 = Control_Review.getInstance().house_name(review_write_view.get(i).getHouse_pk());
+                                String 회원명 = Control_Review.getInstance().member_name(review_write_view.get(i).getMember_pk());
+                                String 날짜 = review_write_view.get(i).getReservation_date();
+                                System.out.printf(" %2d\t\t %-10s  %-5s \t%10s\n", i + 1, 집이름, 회원명, 날짜);
+                            }// for end
+
+                            System.out.print("안내] 번호를 선택해주세요 > ");선택한번호 = scanner.nextInt();
+                            if (선택한번호 < review_write_view.size() + 1) {
+                                System.out.print("안내] 내용을 입력해주세요 : "); String content = scanner.nextLine();
+                                System.out.print("안내] 평점을 입력해주세요 (1~5) : "); int 점수 = scanner.nextInt();
+                                Host_ReviewDto host_reviewDto = new Host_ReviewDto(0,review_write_view.get(선택한번호-1).getMember_pk(),review_write_view.get(선택한번호-1).getHouse_pk(),content,점수);
+                                if (Control_Review.getInstance().review_write(host_reviewDto)) {
+                                    System.out.println("안내]리뷰등록에 성공했습니다.");
+                                    break;
+                                } else {
+                                    System.out.println("안내]리뷰등록에 실패했습니다.");
+                                    break;
+                                }
+                            } else {
+                                System.out.println("안내] 해당 순번은 없습니다.");
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("숫자입력해주세요");
+                            scanner.next();
+                        }
+                    }// 한글 입력시 예외처리 하기위한 while end
 
 
-                    if (Control_Review.getInstance().review_write()) {
-                        System.out.println("안내]리뷰등록에 성공했습니다.");
-                    } else {
-                        System.out.println("안내]리뷰등록에 실패했습니다.");
-                    }
+                    //////////////////////////리뷰등록 끝 - 전승호
 
                 } else if (choice == 2) {//리뷰수정
 
