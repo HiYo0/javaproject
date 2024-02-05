@@ -2,6 +2,7 @@ package controller;
 
 import model.Dao.Host_Dao;
 import model.Dto.HouseDto;
+import model.Dto.Reservation_dateDto;
 
 import java.util.ArrayList;
 
@@ -29,14 +30,16 @@ public class Control_Host {//class start
 
 
     // 오승택 =======================================================
-    public boolean insertHouse(HouseDto houseDto, Reservation_dateDto reservation_dateDto){
+    public boolean insertHouse(HouseDto houseDto, Reservation_dateDto reservation_dateDto, int day){
         boolean result  = false;
 
         // Host_Dao 에서 반환받은 결과값
-        result = Host_Dao.getInstance().insertHouse(houseDto, reservation_dateDto);
+        result = Host_Dao.getInstance().insertHouse(houseDto);
 
+        // house_pk를 생성해야 하기때문에
+        // house 테이블 생성완료 후 reservation_table 생성
         if(result){
-            System.out.println("House 등록 완료");
+            result = Host_Dao.getInstance().insertReservation_date(houseDto, reservation_dateDto, day);
         }
         return result;
     }
