@@ -65,7 +65,10 @@ public class Control_Review {//class start
     public boolean house_Review_update(Host_ReviewDto host_reviewDto){
         return Review_Dao.getInstance().house_Review_update(host_reviewDto);
     }
-
+    // 리뷰삭제
+    public boolean house_Review_delete(int 리뷰번호){
+        return Review_Dao.getInstance().house_Review_delete(리뷰번호);
+    }
 
 
     // 전승호 end------------------------------------

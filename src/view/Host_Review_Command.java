@@ -221,7 +221,47 @@ public class Host_Review_Command {//class start
                     }
                     // 전승호 =============================================================================
                 } else if (choice == 3) {//리뷰삭제
+                    // 전승호 리뷰삭제 start ===============================================================
+                    ArrayList<Host_ReviewDto> my_review = Control_Review.getInstance().Host_my_review(ch);
+                    if(!my_review.isEmpty()) {
+                        // my_review 가 값이 있다면 실행 => 없으면 안내] 등록하신 리뷰가 없습니다. 출력
+                        System.out.println("\n\n======================== 내가 작성했던 리뷰 리스트 ==========================");
+                        System.out.printf(" %2s\t %-10s  %-5s %30s\n", "번호", "대상", "점수", "내용");
+                        for (int i = 0; i < my_review.size(); i++) {
+                            String 대상 = Control_Review.getInstance().member_name(my_review.get(i).getTarget());
+                            int 점수 = my_review.get(i).getScore();
+                            String 내용 = my_review.get(i).getContent();
+                            System.out.printf(" %2d\t\t %-10s  %-5s \t%30s\n", i + 1, 대상, 점수, 내용);
+                        }//for end
 
+                        try {
+                            while (true) {
+                                System.out.print(" 삭제하실 번호를 입력해 주세요 : ");int 삭제선택 = scanner.nextInt();
+                                if (삭제선택 < my_review.size() + 1) {
+                                    int 삭제할리뷰번호 = my_review.get(삭제선택-1).getReview_pk();
+                                    if(Control_Review.getInstance().house_Review_delete(삭제할리뷰번호)){
+                                        System.out.println("안내] 수정 완료되었습니다.");
+                                    }else {
+                                        System.out.println("안내] 수정 실패했습니다.");
+                                    }
+                                    break;
+
+                                } else {
+                                    System.out.println("안내] 선택하신 번호에 해당하는 리뷰가 없습니다. ");
+                                    System.out.println("\n   다시 선택해주세요. ");
+                                }
+                            }//while end
+                        }catch (InputMismatchException e){
+                            System.out.println("안내 ] 숫자를 입력해주세요");
+                            scanner.nextLine();
+                        }
+
+                    }else {
+                        System.out.println("안내] 등록하신 리뷰가 없습니다.");
+                    }
+
+
+                    // 전승호 =============================================================================
                 } else if (choice == 4) {//돌아가기
                     break;
                 }else {

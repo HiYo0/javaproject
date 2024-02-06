@@ -205,6 +205,24 @@ public class Review_Dao extends Dao{//class start
         }
         return false;
     }
+        // 3.
+    public boolean house_Review_delete(int 리뷰번호){
+        try {
+            // 1. SQL 작성
+            String sql = "delete from host_review where review_pk = "+리뷰번호+";";
+            // 2. SQL 기재
+            ps = conn.prepareStatement(sql);
+
+            // 3. SQL 실행
+            int count = ps.executeUpdate();
+            // 5. sql 실행결과 + 처리
+            if(count == 1){return true;}
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 
 
 
