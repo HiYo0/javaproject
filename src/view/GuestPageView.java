@@ -2,6 +2,7 @@ package view;
 
 import controller.Control_Guest;
 import controller.Control_member;
+import model.Dto.HouseDto;
 import model.Dto.ReservationDto;
 
 import java.util.ArrayList;
@@ -31,22 +32,24 @@ public class GuestPageView {
 
     //실행 메소드
     public void run(){
-        System.out.println("1.숙소검색 | 2.예약관리 | 3.리뷰관리 | 4.돌아가기");
-        System.out.print("선택 : ");
-        int ch=scanner.nextInt();
+        while (true) {
+            System.out.println("1.숙소검색 | 2.예약관리 | 3.리뷰관리 | 4.돌아가기");
+            System.out.print("선택 : ");
+            int ch = scanner.nextInt();
 
-        if(ch==1){
+            if(ch==1){
+                searchHouse();
+            }
+            else if(ch==2){
+                reservationManagement();
+            }
+            else if(ch==3){
+                GuestReviewView.getInstance().run();
+            }
+            else if(ch==4){
 
-        }
-        else if(ch==2){
-            reservationManagement();
-        }
-        else if(ch==3){
-            GuestReviewView.getInstance().run();
-        }
-        else if(ch==4){
-
-        }
+            }
+        }//while end
     }//m end
 
     //예약관리 메소드
@@ -149,4 +152,40 @@ public class GuestPageView {
             }
         }//while end
     }//m end
+
+
+    // 승택 ================================================================
+    public void searchHouse(){
+        System.out.println("1.지역만 선택하기 | 2.상세 조건 선택하기(지역, 날짜, 인원, 가격) : ");
+        int ch = scanner.nextInt();
+
+        if(ch == 1){
+            System.out.println("지역 선택 : ");     String region = scanner.next();
+            ArrayList<HashMap<String, String>> searchHouse = Control_Guest.getInstance().searchHouse(region);
+            outputHouse(region, searchHouse);
+        }
+        else if(ch == 2){
+            System.out.println("입실 날짜 : ");
+            System.out.println("몇박 하시겠습니까?");
+        }
+        else{
+            System.out.println("잘못 입력하셨습니다.");
+        }
+    }
+
+    public void outputHouse(String rigion, ArrayList<HashMap<String, String>> searchHouse){
+        System.out.println("============= 숙소내역 ===============");
+        System.out.println("no\t\t숙소이름\t\t지역\t\t최대인원\t\t\t\t날짜\t\t\t1박당가격");
+        for (int i = 0; i < searchHouse.size(); i++) {
+            System.out.printf("%-7s %-10s %-10s %-10s %10s %13s\n",
+                    (i+1),
+                    searchHouse.get(i).get("houseName"),
+                    searchHouse.get(i).get("region"),
+                    searchHouse.get(i).get("maxPeople"),
+                    searchHouse.get(i).get("reservation_date"),
+                    searchHouse.get(i).get("day_price"));
+        }//for end
+        System.out.println("=====================================");
+    }
+    // 승택 end ============================================================
 }//c end
