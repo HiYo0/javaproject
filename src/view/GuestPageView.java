@@ -37,16 +37,13 @@ public class GuestPageView {
             System.out.print("선택 : ");
             int ch = scanner.nextInt();
 
-            if(ch==1){
+            if (ch == 1) {
                 searchHouse();
-            }
-            else if(ch==2){
+            } else if (ch == 2) {
                 reservationManagement();
-            }
-            else if(ch==3){
+            } else if (ch == 3) {
                 GuestReviewView.getInstance().run();
-            }
-            else if(ch==4){
+            } else if(ch==4){
 
             }
         }//while end
