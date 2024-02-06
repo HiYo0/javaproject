@@ -1,6 +1,7 @@
 package controller;
 
 import model.Dao.Guest_Dao;
+import model.Dto.Guest_ReviewDto;
 import model.Dto.HouseDto;
 import model.Dto.ReservationDto;
 
@@ -62,10 +63,28 @@ public class Control_Guest {//class start
         return result;
     }//m end
 
-    //리뷰등록 메소드
-    public boolean inputReview(){
+    //리뷰 가능한 예약번호인지 유효성검사 메소드
+    public boolean checkFinishReservationList(int reservation_pk){
+        boolean result=Guest_Dao.getInstance().checkFinishReservationList(reservation_pk);
+        return result;
+    }
 
-        return false;
+    //리뷰등록 메소드
+    public boolean inputReview(int reservation_pk, Guest_ReviewDto guestReviewDto){
+        //예약번호에 해당하는 숙소번호가 있는지 확인
+        int housePk=Guest_Dao.getInstance().findHousePk(reservation_pk);
+        if(housePk==0){
+            return false;
+        }
+
+        //dao에 있는 DB입력(review) 메소드 호출
+        boolean result=Guest_Dao.getInstance().inputReview(reservation_pk, guestReviewDto);
+
+        if(result){
+            //예약상태 3(리뷰완료)로 변경
+            result=Guest_Dao.getInstance().changeStatus(reservation_pk,3);
+        }
+        return result;
     }//m end
 
 

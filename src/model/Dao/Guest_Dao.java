@@ -1,10 +1,13 @@
 package model.Dao;
 
 import controller.Control_member;
+import model.Dto.Guest_ReviewDto;
 import model.Dto.HouseDto;
 import model.Dto.ReservationDto;
 
 import java.lang.reflect.Array;
+import java.security.cert.Extension;
+import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -90,7 +93,7 @@ public class Guest_Dao extends Dao{
         return null;
     }//m end
 
-    //예약내역 삭제
+    //예약취소 메소드
     public int deleteReservation(int reservation_pk){
         try{
             String sql="update reservation set reservation_status=2 where reservation_pk=?;";
@@ -164,7 +167,7 @@ public class Guest_Dao extends Dao{
 
 
 //=========================================== 리뷰관리 =================================================
-    //리뷰 가능 내역 출력 메소드 (조건 : 예약일자지남 && 예약상태1(승인완료))
+    //리뷰 가능 내역 출력 메소드 (조건 : 예약상태1(승인완료))
     public ArrayList<HashMap<String, String>> finishReservationList(){
         //출력값 저장 배열 생성
         ArrayList<HashMap<String, String>> finishReservations=new ArrayList<>();
@@ -175,7 +178,7 @@ public class Guest_Dao extends Dao{
         try{
             String sql = "select reservation_pk, reservation_date, houseName from house join\n" +
                     "(select * from reservation_date join\n" +
-                    "(select reservation_pk, reservation_date_pk from (select * from reservation where reservation_status=0 and member_pk=?) as a \n" +
+                    "(select reservation_pk, reservation_date_pk from (select * from reservation where reservation_status=1 and member_pk=?) as a \n" +
                     "join (select * from reservation_detail group by reservation_pk) as b\n" +
                     "using(reservation_pk)) as c\n" +
                     "using(reservation_date_pk)) as d\n" +
@@ -189,7 +192,6 @@ public class Guest_Dao extends Dao{
 
             //출력값 저장
             while(rs.next()){
-
 
                 //hashMap 객체 생성
                 HashMap<String, String> finishRecords=new HashMap<>();
@@ -208,7 +210,93 @@ public class Guest_Dao extends Dao{
             System.out.println("[오류] : "+e);
         }
         return null;
-    }
+    }//m end
+
+    //리뷰 가능한 예약번호인지 유효성검사 메소드
+    public boolean checkFinishReservationList(int reservation_pk){
+        ArrayList<HashMap<String, String>> rsList= finishReservationList();
+        for(int i=0; i<rsList.size(); i++){
+            if(String.valueOf(reservation_pk).equals(rsList.get(i).get("reservation_pk"))){
+                return true;
+            }
+        }
+        return false;
+    }//m end
+
+    //예약번호 -> 숙소번호 찾기 메소드
+    public int findHousePk(int reservation_pk){
+        try{
+            //sql 작성
+            String sql="select house_pk from ( \n" +
+                    "select reservation_date_pk from reservation_detail where reservation_pk=?) as a\n" +
+                    "join reservation_date using(reservation_date_pk);";
+            //sql 기재
+            ps=conn.prepareStatement(sql);
+            //sql 매개변수 대입
+            ps.setInt(1,reservation_pk);
+            //sql 실행
+            rs=ps.executeQuery();
+
+            //추출한 데이터 반환
+            rs.next();
+            return rs.getInt(1);
+        }
+        catch (Exception e){
+            System.out.println("[오류] : "+e);
+        }
+        return 0;
+    }//m end
+
+    //리뷰등록 메소드
+    public boolean inputReview(int reservation_pk, Guest_ReviewDto guestReviewDto){
+        try{
+            int member_pk=findMemberPk();   //로그인한 회원번호
+            int house_pk=findHousePk(reservation_pk);   //예약된 숙소번호
+            //sql작성
+            String sql="insert into guest_review(target,writer,content,score) value(?,?,?,?);";
+            //sql 기재
+            ps=conn.prepareStatement(sql);
+            //sql 매개변수 대입
+            ps.setInt(1,house_pk);
+            ps.setInt(2,member_pk);
+            ps.setString(3,guestReviewDto.getContent());
+            ps.setInt(4,guestReviewDto.getScore());
+            //sql 실행
+            int count=ps.executeUpdate();
+
+            if(count==1) {//실행됐으면 true 반환
+                return true;
+            }
+        }
+        catch (Exception e){
+            System.out.println("[오류] : "+e);
+        }
+        return false;
+    }//m end
+
+    //예약 상태 변경 메소드[매개변수 : reservation_pk(상태가 바뀌는 곳의 예약번호), newStatus(바뀔 상태)]
+    public boolean changeStatus(int reservation_pk, int newStatus){
+        try{
+            //sql 작성
+            String sql="update reservation set reservation_status=? where reservation_pk=?;";
+            //sql 기재
+            ps=conn.prepareStatement(sql);
+            //sql 매개변수 대입
+            ps.setInt(1, newStatus);
+            ps.setInt(2, reservation_pk);
+            //sql 실행
+            int count=ps.executeUpdate();
+            if(count==1){
+                return true;
+            }
+        }
+
+        catch (Exception e){
+            System.out.println("[오류] : "+e);
+        }
+        return false;
+    }//m end
+
 
 
     // 승택 ============================================================
@@ -249,9 +337,4 @@ public class Guest_Dao extends Dao{
     // 승택 end ========================================================
 
 
-    //리뷰등록 메소드
-    public boolean inputReview(){
-
-        return false;
-    }//m end
 }//c end

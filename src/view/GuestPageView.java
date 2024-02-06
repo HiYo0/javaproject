@@ -55,7 +55,7 @@ public class GuestPageView {
             ArrayList<HashMap<String, String>> result = Control_Guest.getInstance().reservationList();
 
             //배열에 아무것도 저장되지 않을경우 안내문구 출력
-            if(result==null){
+            if(result.size()==0){
                 System.out.println("예약내역이 없습니다.");
                 return;
             }//if end
