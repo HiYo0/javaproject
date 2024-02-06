@@ -3,6 +3,7 @@ package model.Dao;
 import controller.Control_member;
 import model.Dto.ReservationDto;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -157,6 +158,60 @@ public class Guest_Dao extends Dao{
         catch (Exception e){
             System.out.println("[오류] : "+e);
         }
+        return false;
+    }//m end
+
+
+//=========================================== 리뷰관리 =================================================
+    //리뷰 가능 내역 출력 메소드 (조건 : 예약일자지남 && 예약상태1(승인완료))
+    public ArrayList<HashMap<String, String>> finishReservationList(){
+        //출력값 저장 배열 생성
+        ArrayList<HashMap<String, String>> finishReservations=new ArrayList<>();
+
+        //회원번호 저장 변수
+        int member_pk=findMemberPk();
+        //sql 실행
+        try{
+            String sql="select reservation_pk, reservation_date, houseName from house join\n" +
+                    "(select * from reservation_date join\n" +
+                    "(select reservation_pk, reservation_date_pk from (select * from reservation where reservation_status=0 and member_pk=?) as a \n" +
+                    "join (select * from reservation_detail group by reservation_pk) as b\n" +
+                    "using(reservation_pk)) as c\n" +
+                    "using(reservation_date_pk)) as d\n" +
+                    "using(house_pk);";
+            //sql 기재
+            ps=conn.prepareStatement(sql);
+            //매개변수 대입
+            ps.setInt(1,member_pk);
+            //실행
+            rs=ps.executeQuery();
+
+            //출력값 저장
+            while(rs.next()){
+                //hashMap 객체 생성
+                HashMap<String, String> finishRecords=new HashMap<>();
+
+                //hashMap에 저장(예약번호, 날짜, 숙소이름)
+                finishRecords.put("reservation_pk",String.valueOf(rs.getInt("reservation_pk")));
+                finishRecords.put("reservation_date",rs.getString("reservation_date"));
+                finishRecords.put("houseName",rs.getString("houseName"));
+
+                //배열에 hashMap 저장
+                finishReservations.add(finishRecords);
+            }
+            //배열 반환
+            return finishReservations;
+        }
+        catch (Exception e){
+            System.out.println("[오류] : "+e);
+        }
+        return null;
+    }
+
+
+    //리뷰등록 메소드
+    public boolean inputReview(){
+
         return false;
     }//m end
 }//c end

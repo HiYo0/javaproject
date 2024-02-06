@@ -22,6 +22,10 @@ public class GuestPageView {
 
     //test용 main메소드
     public static void main(String[] args) {
+        System.out.print("아이디(임시)test용 : ");
+        String id=GuestPageView.getInstance().scanner.next();
+        Control_member.getInstance().setLogin_id(id);
+
         GuestPageView.getInstance().run();
     }
 
@@ -35,13 +39,10 @@ public class GuestPageView {
 
         }
         else if(ch==2){
-            System.out.print("아이디(임시)test용 : ");
-            String id=scanner.next();
-            Control_member.getInstance().setLogin_id(id);
             reservationManagement();
         }
         else if(ch==3){
-
+            GuestReviewView.getInstance().run();
         }
         else if(ch==4){
 
@@ -79,7 +80,7 @@ public class GuestPageView {
                     reservationStatus="리뷰작성 완료";
                 }//if end
 
-                System.out.printf("%-10s %-10s %-10s %-10s %-10s\n",
+                System.out.printf("%-10s %-10s %-10s\n",
                         result.get(i).get("reservation_pk"),
                         result.get(i).get("reservation_date"),
                         result.get(i).get("houseName"),
@@ -104,6 +105,7 @@ public class GuestPageView {
                     //-----------존재하는 예약번호인지 유효성 검사--------------
                     boolean rspkCheck=Control_Guest.getInstance().checkReservationPk(reservation_pk);
                     if(!rspkCheck){
+
                         System.out.println("존재하는 예약번호가 없습니다. 예약관리 화면으로 돌아갑니다..");
                         continue;
                     }//if end--------------------------------------------
@@ -125,21 +127,22 @@ public class GuestPageView {
                         }
                         else if(deleteResult==3){//취소안됨2
                             System.out.println("이미 취소된 내역입니다.");
-                        }
-
-                    } else if (check == 2) {//아니오 선택
+                        }//if3 end
+                    }
+                    else if (check == 2) {//아니오 선택
                         System.out.println("예약관리 페이지로 돌아갑니다.");
-                    } else {
+                    }
+                    else {
                         System.out.println("올바르지 않은 입력입니다.");
                     }//if2 end
-
-                } else if (ch == 2) {//돌아가기
+                }
+                else if (ch == 2) {//돌아가기
                     System.out.println("선택화면으로 돌아갑니다.");
                     return;
-                } else {
+                }
+                else {
                     System.out.println("올바르지 않은 입력입니다.");
                 }//if1 end
-
             }//t end
             catch (Exception e) {
                 System.out.println("올바르지 않은 입력입니다. : " + e);
