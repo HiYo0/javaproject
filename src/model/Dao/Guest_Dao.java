@@ -167,6 +167,45 @@ public class Guest_Dao extends Dao{
 
 
 //=========================================== 리뷰관리 =================================================
+    //내게 등록된 리뷰 출력
+    public ArrayList<HashMap<String, String>> myReview(){
+        int member_pk=findMemberPk();//회원번호 호출
+        ArrayList<HashMap<String, String>> myReviews=new ArrayList<>();//데이터 저장 배열 생성
+
+        try{
+            //sql작성
+            String sql="select houseName, content, score from house join\n" +
+                    "(select * from host_review where target=?) as a on house_pk=writer;";
+            //sql기재
+            ps=conn.prepareStatement(sql);
+            //sql매개변수 대입
+            ps.setInt(1,member_pk);
+            //sql실행
+            rs=ps.executeQuery();
+
+            //출력데이터 저장
+            while(rs.next()){
+                //숙소명 앞 세글자만 추출
+                String houseName= rs.getString("houseName").substring(0,3);
+                //HashMap에 추출한 데이터 저장
+                HashMap<String, String> myReviewMap=new HashMap<>();
+                myReviewMap.put("houseName", houseName);
+                myReviewMap.put("content", rs.getString("content"));
+                myReviewMap.put("score",String.valueOf(rs.getInt("score")));
+
+                //배열에 데이터 저장
+                myReviews.add(myReviewMap);
+            }//w end
+
+            //배열 반환
+            return myReviews;
+        }//t end
+        catch (Exception e){
+            System.out.println("[오류] : "+e);
+        }
+        return null;
+    }//m end
+
     //리뷰 가능 내역 출력 메소드 (조건 : 예약상태1(승인완료))
     public ArrayList<HashMap<String, String>> finishReservationList(){
         //출력값 저장 배열 생성
@@ -296,6 +335,70 @@ public class Guest_Dao extends Dao{
         }
         return false;
     }//m end
+
+//--리뷰수정--
+    //내가 쓴 리뷰 출력 메소드
+    public ArrayList<HashMap<String, String>> printWriteReview(){
+        int member_pk=findMemberPk();   //로그인된 회원번호 호출
+
+        //출력값 저장 배열 생성
+        ArrayList<HashMap<String, String>> writeReviews=new ArrayList<>();
+        try{
+            //sql 작성
+            String sql="select review_pk, houseName, content, score from house join\n" +
+                    "(select * from guest_review where writer=?) as a on house_pk=target;";
+            //sql 기재
+            ps=conn.prepareStatement(sql);
+            //sql 매개변수 대입
+            ps.setInt(1, member_pk);
+            //sql 실행
+            rs=ps.executeQuery();
+            while(rs.next()){
+                HashMap<String, String> ReviewRecord=new HashMap<>();//저장 객체 생성
+                ReviewRecord.put("review_pk",rs.getString("review_pk"));
+                ReviewRecord.put("houseName",rs.getString("houseName"));
+                ReviewRecord.put("content",rs.getString("content"));
+                ReviewRecord.put("score",String.valueOf(rs.getInt("score")));
+
+                //객체 배열에 저장
+                writeReviews.add(ReviewRecord);
+            }//while end
+            //데이터 배열 반환
+            return writeReviews;
+        }//t end
+        catch (Exception e){
+            System.out.println("[오류] : "+e);
+        }
+        return null;
+    }//m end
+
+    //수정할 리뷰번호 존재 여부 판별 메소드
+    public boolean checkReviewPk(int review_pk){
+        try {
+            //sql 작성
+            String sql = "select review_pk from guest_review where review_pk=?;";
+            //sql 기재
+            ps=conn.prepareStatement(sql);
+            //sql 매개변수 대입
+            ps.setInt(1, review_pk);
+            //sql 실행
+            rs=ps.executeQuery();
+            //결과 반환
+            if(rs.next()){
+                return true;
+            }
+        }//t end
+        catch (Exception e){
+            System.out.printf("[오류] : "+e);
+        }
+        return false;
+    }//m end
+
+    //리뷰수정
+    public boolean updateReview(){
+        return false;
+    }
+
 
 
 

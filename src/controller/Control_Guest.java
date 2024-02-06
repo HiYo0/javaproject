@@ -48,6 +48,13 @@ public class Control_Guest {//class start
         return 0;
     }//m end
 
+    //=====================리뷰관리===========================
+    //내게 등록된 리뷰 출력
+    public ArrayList<HashMap<String, String>> myReview(){
+        ArrayList<HashMap<String, String>> result=Guest_Dao.getInstance().myReview();
+        return result;
+    }
+
     //존재하는 예약번호인지 유효성검사 메소드
     public boolean checkReservationPk(int reservation_pk){
         boolean result=Guest_Dao.getInstance().checkReservationPk(reservation_pk);
@@ -86,6 +93,25 @@ public class Control_Guest {//class start
         }
         return result;
     }//m end
+
+    //내가 쓴 리뷰 출력 메소드
+    public ArrayList<HashMap<String, String>> printWriteReview(){
+        ArrayList<HashMap<String, String>> result=Guest_Dao.getInstance().printWriteReview();
+        return result;
+    }//m end
+
+    //수정할 리뷰 수정 메소드
+    public boolean updateReview(int review_pk){
+        //리뷰번호 존재여부 유효성검사
+        boolean check=Guest_Dao.getInstance().checkReviewPk(review_pk);
+        if(!check){
+            return false;
+        }
+
+        //리뷰수정 메소드 호출
+        return false;
+    }//m end
+
 
 
     // 승택 ===========================================================
