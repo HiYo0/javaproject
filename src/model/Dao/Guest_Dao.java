@@ -1,6 +1,7 @@
 package model.Dao;
 
 import controller.Control_member;
+import model.Dto.HouseDto;
 import model.Dto.ReservationDto;
 
 import java.lang.reflect.Array;
@@ -208,6 +209,44 @@ public class Guest_Dao extends Dao{
         }
         return null;
     }
+
+
+    // 승택 ============================================================
+    public ArrayList<HashMap<String,String>> searchHouse(String region){
+        ArrayList<HashMap<String, String>> searchHouse = new ArrayList<>();
+
+        try {
+            String sql = "select house.house_pk, house.houseName, house.region, house.maxPeople, reservation_date.reservation_date,\n" +
+                         "reservation_date.day_price from house inner join reservation_date on\n" +
+                         "house.house_pk = reservation_date.house_pk where region = ? order by reservation_date.reservation_date asc";
+
+            ps=conn.prepareStatement(sql);
+            ps.setString(1, region);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                HashMap<String, String> houseList=new HashMap<>();
+
+                houseList.put("house_pk",String.valueOf( rs.getInt("house_pk")));
+                houseList.put("houseName",String.valueOf( rs.getString("houseName")));
+                houseList.put("region",String.valueOf( rs.getString("region")));
+                houseList.put("maxPeople",String.valueOf( rs.getInt("maxPeople")));
+                houseList.put("reservation_date",String.valueOf( rs.getString("reservation_date")));
+                houseList.put("day_price",String.valueOf( rs.getInt("day_price")));
+
+                searchHouse.add(houseList);
+            }
+            if (searchHouse.size()==0){
+                System.out.println("등록된 숙소가 없습니다.");
+            }
+            return searchHouse;
+
+        }catch (Exception e){
+            System.out.println(e + "오류");
+        }
+
+        return null;
+    }
+    // 승택 end ========================================================
 
 
     //리뷰등록 메소드

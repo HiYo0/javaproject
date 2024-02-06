@@ -7,8 +7,10 @@ public class MyPageView {
     private static MyPageView myPageView=new MyPageView();
     public static MyPageView getInstance(){return myPageView;}
 
-    //실행 메소드
-    public void run(){
-        System.out.println("1.비밀번호 변경 | 2.회원탈퇴 | 3.돌아가기");
-    }
+    //테스트 실행 메소드
+    public static void main(String[] args) {ChangePasswordView.getInstance().ChangePasswordView();}
+
+        public void run(){
+            System.out.println("1.비밀번호 변경 | 2.회원탈퇴 | 3.돌아가기");
+        }
 }

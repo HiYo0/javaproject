@@ -2,62 +2,52 @@ package model.Dto;
 
 public class ReviewWrite_View_Dto {//class start
     // 전승호 -----------------------------
-    private String houseName;       // 숙소이름
-    private String memberName;      // 사용인 이름
-    private String date;            // 사용 일자
-    private String region;          // 지역
-    private int price;              // 가격
+    private int reservation_pk;     // 예약식별번호
+    private int house_pk;
+    private int member_pk;
+    private String reservation_date;
 
 
     public ReviewWrite_View_Dto(){}
-    public ReviewWrite_View_Dto(String houseName, String memberName, String date, String region, int price) {
-        this.houseName = houseName;
-        this.memberName = memberName;
-        this.date = date;
-        this.region = region;
-        this.price = price;
+
+    public ReviewWrite_View_Dto(int reservation_pk, int house_pk, int member_pk, String reservation_date) {
+        this.reservation_pk = reservation_pk;
+        this.house_pk = house_pk;
+        this.member_pk = member_pk;
+        this.reservation_date = reservation_date;
     }
 
-    public String getHouseName() {
-        return houseName;
+    public int getReservation_pk() {
+        return reservation_pk;
     }
 
-    public void setHouseName(String houseName) {
-        this.houseName = houseName;
+    public void setReservation_pk(int reservation_pk) {
+        this.reservation_pk = reservation_pk;
     }
 
-    public String getMemberName() {
-        return memberName;
+    public int getHouse_pk() {
+        return house_pk;
     }
 
-    public void setMemberName(String memberName) {
-        this.memberName = memberName;
+    public void setHouse_pk(int house_pk) {
+        this.house_pk = house_pk;
     }
 
-    public String getDate() {
-        return date;
+    public int getMember_pk() {
+        return member_pk;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setMember_pk(int member_pk) {
+        this.member_pk = member_pk;
     }
 
-    public String getRegion() {
-        return region;
+    public String getReservation_date() {
+        return reservation_date;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
+    public void setReservation_date(String reservation_date) {
+        this.reservation_date = reservation_date;
     }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     // 전승호 end -------------------------------------
 
 }//class end

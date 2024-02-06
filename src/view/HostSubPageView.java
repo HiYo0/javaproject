@@ -47,7 +47,7 @@ public class HostSubPageView {
         System.out.println("숙소이름 :");      String name = scanner.next();
         System.out.println("지역 :");         String region = scanner.next();
         System.out.println("시작날짜 ex)0000-00-00 :");         String date = scanner.next();
-        System.out.println("몇박 하시겠습니까? : "); int day = scanner.nextInt();
+        System.out.println("며칠 등록하시겠습니까? : "); int day = scanner.nextInt();
         System.out.println("최대인원 :");       int people = scanner.nextInt();
         System.out.println("1박당 가격 :");     int price = scanner.nextInt();
 
