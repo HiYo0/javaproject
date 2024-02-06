@@ -22,13 +22,13 @@ public class Host_Review_Command {//class start
     public static Host_Review_Command getInstance(){return review_command;}
 
 
-//    public static void main(String[] args) {// 테스트용
-//        Host_Review_Command.getInstance().run();
-//    }//테스트용
+    public static void main(String[] args) {// 테스트용
+        Host_Review_Command.getInstance().run();
+    }//테스트용
 
     public void run(){
         Scanner scanner = new Scanner(System.in);
-        String id = Control_member.getInstance().getLogin_id();
+        String id = "noname1";//Control_member.getInstance().getLogin_id();
         System.out.println("======================= 내가 등록한 숙소 =======================");
         System.out.printf(" %2s\t%-12s %-15s %-4s \t\t%2s\n","번호","식별번호","이름","지역","최대인원");
         // 로그인한 id 주고 그에대한 house 정보 가져오기
@@ -53,6 +53,7 @@ public class Host_Review_Command {//class start
                         for (int i = 0; i < my_house_list.size(); i++) {
                             if ((ch - 1) == i) {
                                 ch = my_house_list.get(i).getHouse_pk();
+
                                 break;
                             }
                         }//for end
@@ -134,7 +135,7 @@ public class Host_Review_Command {//class start
                                         }
                                     }
                                     scanner.nextLine();
-                                    Host_ReviewDto host_reviewDto = new Host_ReviewDto(0, review_write_view.get(선택한번호 - 1).getMember_pk(), review_write_view.get(선택한번호 - 1).getHouse_pk(), content, 점수);
+                                    Host_ReviewDto host_reviewDto = new Host_ReviewDto(0, review_write_view.get(선택한번호 - 1).getMember_pk(), ch, content, 점수);
                                     if (Control_Review.getInstance().review_write(host_reviewDto)) {
                                         System.out.println("안내]리뷰등록에 성공했습니다.");
                                         // 예약상태 수정 하기   선택한 예약식별번호 -> 반환없음.
@@ -223,8 +224,11 @@ public class Host_Review_Command {//class start
 
                 } else if (choice == 4) {//돌아가기
                     break;
+                }else {
+                    System.out.println("안내] 요청하신 번호는 없는 기능입니다.");
+                    scanner.nextLine();
                 }//IF END
-            }catch (InputMismatchException e) {System.out.println(e+"\n숫자로 입력해주세요");}
+            }catch (InputMismatchException e) {System.out.println(e+"\n숫자로 입력해주세요");scanner.nextLine();}
         }//while end
     }// run method end
 

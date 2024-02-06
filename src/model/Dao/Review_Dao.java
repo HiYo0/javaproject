@@ -158,7 +158,7 @@ public class Review_Dao extends Dao{//class start
         ArrayList<Host_ReviewDto> house_review_list = new ArrayList<>();// house_review_list 데이터의집
         try {
             // 1. sql 작성한다
-            String sql = "select * from house_review where writer = "+ch+";";
+            String sql = "select * from host_review where writer = "+ch+";";
             // 2. sql 기재한다
             ps = conn.prepareStatement(sql);
             // 3. sql 실행한다.
