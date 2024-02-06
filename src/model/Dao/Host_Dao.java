@@ -85,6 +85,7 @@ public class Host_Dao extends Dao{// class start
                 member_pk = rs.getInt("member_pk");
             }
 
+            member_pk = 1;
 
             // member_pk를 먼저 받아와서 오류검사 > house 테이블에 넣기
             sql = "insert into house(houseName, member_pk, region, maxPeople) values(?, ?, ?, ?)";
@@ -107,7 +108,8 @@ public class Host_Dao extends Dao{// class start
     public boolean insertReservation_date(HouseDto houseDto, Reservation_dateDto reservation_dateDto, int day){
         try{
             int house_pk = 0;
-            String sql;
+            String sql = "";
+            int result = 0;
 
             // house_pk를 먼저 받아오기
             sql = "select house_pk from house where houseName = ?";
@@ -119,21 +121,59 @@ public class Host_Dao extends Dao{// class start
             }
 
             // 날짜 테이블에 데이터 넣기
-            sql = "insert into reservation_date(reservation_date, house_pk, day_price) values(?, ?, ?)";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, reservation_dateDto.getReservation_date());
-            ps.setInt(2, house_pk);
-            ps.setInt(3, reservation_dateDto.getDay_price());
-
-            if(ps.executeUpdate() == 1){
+            for(int i=1; i<=day; i++) {
+                sql = "insert into reservation_date(reservation_date, house_pk, day_price) values(?, ?, ?)";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, reservation_dateDto.getReservation_date());
+                ps.setInt(2, house_pk);
+                ps.setInt(3, reservation_dateDto.getDay_price());
+                if(ps.executeUpdate() == 1){
+                    result++;
+                }
+            }
+            if(day >= 2) { // 2박 이상일때 날짜 변경 함수를 탄다
+                changeReservation_date(house_pk, reservation_dateDto);
+            }
+           if (result == day) {
                 return true;
             }
-
         }catch(Exception e){
             System.out.println(e +"DB오류");
         }
         return false;
     }
+
+    public void changeReservation_date(int house_pk, Reservation_dateDto reservation_dateDto){
+
+        String sql = "";
+        int[] reservation_date_pk = new int[14]; // 최대 2주 예약한다고 가정
+        int index = 0;
+
+        try{
+            // reservation_date_pk를 먼저 가져오고
+            sql = "select reservation_date_pk from reservation_date where reservation_date = ? and house_pk = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, reservation_dateDto.getReservation_date());
+            ps.setInt(2, house_pk);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                reservation_date_pk[index] = rs.getInt("reservation_date_pk");
+                index++;
+            }
+
+            // reservation_date 테이블의 reservation_date 칼럼을 바꿔준다
+            for(int i=1; i<index; i++) {
+                sql = "update reservation_date set reservation_date = date_add(reservation_date, interval ? day) where reservation_date_pk = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, i);
+                ps.setInt(2, reservation_date_pk[i]);
+                ps.executeUpdate();
+            }
+        }catch (Exception e){
+            System.out.println(e + "오류");
+        }
+    }
     // 오승택END ================================================================
+
 
 }//class end

@@ -1,6 +1,7 @@
 package controller;
 
 import model.Dao.Guest_Dao;
+import model.Dto.HouseDto;
 import model.Dto.ReservationDto;
 
 import java.util.ArrayList;
@@ -24,5 +25,12 @@ public class Control_Guest {//class start
         ArrayList<HashMap<String, String>> result=Guest_Dao.getInstance().reservationList();
         return result;
     }
+
+    // 승택 ===========================================================
+    public ArrayList<HashMap<String, String>> searchHouse(String region){
+        ArrayList<HashMap<String, String>> searchHouse = Guest_Dao.getInstance().searchHouse(region);
+        return searchHouse;
+    }
+    // 승택 end =======================================================
 
 }//class end
