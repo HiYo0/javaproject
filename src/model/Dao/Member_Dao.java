@@ -145,5 +145,46 @@ public class Member_Dao extends Dao {//class start
         return null;
     }
 
+    // ================================ 비밀번호 변경 ================================ //
 
+    public boolean ChangePasswordView(MemberDto memberDto){
+        try {
+            // SQL 작성
+            String sql = "update member set mpw = ? where memail = ? "; // 받은 email값이 일치하면 mpw필드 수정
+            // update  set 수정할필드명 = 새로운값 , 수정할필드명 = 새로운값 where 조건식
+            // SQL 기재
+            ps = conn.prepareStatement(sql);
+            // SQL 대입
+            ps.setString(1, memberDto.getMpw());
+            ps.setString(2, memberDto.getMemail());
+            // SQL 실행
+            int count = ps.executeUpdate();
+            if(count == 1){return true;}
+            // SQL 결과
+        }catch ( Exception e ){  System.out.println(e);   } // SQL 문제 발생.
+        // 6. 함수종료
+        return false;
+    }
+
+    // ================================ 회원탈퇴 ================================ //
+
+    public boolean DeleteMemberView(MemberDto memberDto){
+        try {
+            // SQL 작성
+            String sql = "delete from member where mid = ? and mpw = ? and mphone = ?";
+            // - delete from 테이블명;
+            // SQL 기재
+            ps = conn.prepareStatement(sql);
+            // SQL 대입
+            ps.setString(1, memberDto.getMid());
+            ps.setString(2, memberDto.getMpw());
+            ps.setString(3, memberDto.getMphone());
+            // SQL 실행
+            int count = ps.executeUpdate();
+            if(count == 1){return true;}
+            // SQL 결과
+        }catch ( Exception e ){  System.out.println(e);   } // SQL 문제 발생.
+        // 6. 함수종료
+        return false;
+    }
 } // c e

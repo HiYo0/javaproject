@@ -31,8 +31,6 @@ public class MainView {
             else if (ch==4) {
                 SearchPw.getInstance().SearchPw();
             }
-            else if (ch==5) {}
-            else if (ch==6) {}
             else {
                 System.out.println("올바른 숫자를 입력해주세요.");
             }

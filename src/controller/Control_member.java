@@ -18,20 +18,18 @@ public class Control_member {//class start
     // ================================ 회원가입 ================================ //
 
     public int join(MemberDto memberDto){
-        // 1. 반환 변수.
+        // 반환 변수.
         int result = 0;
-        // 저장 후 dao에 전달
 
-        // 반환
+        // 아이디 중복검사
         if( Member_Dao.getInstance().idCheck( memberDto.getMid() ) ) {
             return 1;
         }
-        // 3. 회원가입 요청
+        // 회원가입 요청
         result = Member_Dao.getInstance().join( memberDto );
-        // 2. 반환
+        // 반환
         return result;
     }
-
 
     // ================================ 로그인 ================================ //
 
@@ -62,8 +60,34 @@ public class Control_member {//class start
     public String SearchPw(MemberDto memberDto){
         // 저장 후 dao에 전달
         String result = Member_Dao.getInstance().SearchPw(memberDto);
+
+        // 반환
         return result;
     }
+
+    // ================================ 비밀번호 변경 ================================ //
+    public boolean ChangePasswordView(MemberDto memberDto){
+
+        // 저장 후 dao에 전달
+        boolean result = Member_Dao.getInstance().ChangePasswordView(memberDto);
+        System.out.println(memberDto);
+
+        // 반환
+        return result;
+
+    } // ChangePasswordView e
+
+    // ================================ 회원탈퇴 ================================ //
+    public boolean DeleteMemberView(MemberDto memberDto){
+
+        // 저장 후 dao에 전달
+        boolean result = Member_Dao.getInstance().DeleteMemberView(memberDto);
+        System.out.println(memberDto);
+
+        // 반환
+        return result;
+
+    } // ChangePasswordView e
 
 
     // =========================================================================== //
