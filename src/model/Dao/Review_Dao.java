@@ -15,6 +15,7 @@ public class Review_Dao extends Dao{//class start
     // ======================================================
 
     // 전승호 start--------------------------------------
+        // 내 숙소에 등록된 리뷰 가져오기  받은값(숙소번호) -> 반환(숙소번호로된 게스트가 쓴 리뷰배열)
     public ArrayList<Guest_ReviewDto> my_house_Review(int ch){
         ArrayList<Guest_ReviewDto> house_review_list = new ArrayList<>();// house_review_list 데이터의집
         try {
@@ -110,6 +111,7 @@ public class Review_Dao extends Dao{//class start
     }
 
     // 리뷰등록하기
+        // 리뷰저장
     public boolean review_write(Host_ReviewDto host_reviewDto){
         try {
             // 1. SQL 작성 [변수가 들어갈 자리에는 ? 대체한다. ]
@@ -122,12 +124,82 @@ public class Review_Dao extends Dao{//class start
             ps.setString(3, host_reviewDto.getContent());  // 기재된 SQL내 세번째 ? 에 값 대입
             ps.setInt(4, host_reviewDto.getScore());  // 기재된 SQL내 세번째 ? 에 값 대입
 
+
             // 3. SQL 실행
             int count = ps.executeUpdate(); // executeUpdate() 기재된 sql 실행하고 insert된 레코드 개수 반환.
             if (count == 1) {
                 return true;
-            }// 만약에 insert처리된 레코드가 1개이면 회원가입 성공
+            }// 만약에 insert처리된 레코드가 1개이면 등록 성공
             // 4. SQL 결과
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }// method end
+        //리뷰(예약)상태수정
+    public void review_status(int no){
+        try {
+            // 1. SQL 작성 [변수가 들어갈 자리에는 ? 대체한다. ]
+            String sql = "update reservation set reservation_status = 3 where reservation_pk = "+no+";";
+            // 2. SQL 기재
+            ps = conn.prepareStatement(sql);
+            // ? 매개변수 대입
+
+            // 3. SQL 실행
+            ps.executeUpdate(); // executeUpdate() 기재된 sql 실행하고 insert된 레코드 개수 반환.
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    // 리뷰수정/////////////
+        // 1. 내가 쓴리뷰출력
+    public ArrayList<Host_ReviewDto> Host_my_review(int ch){
+        ArrayList<Host_ReviewDto> house_review_list = new ArrayList<>();// house_review_list 데이터의집
+        try {
+            // 1. sql 작성한다
+            String sql = "select * from house_review where writer = "+ch+";";
+            // 2. sql 기재한다
+            ps = conn.prepareStatement(sql);
+            // 3. sql 실행한다.
+            rs = ps.executeQuery();
+            // 4. sql 결과처리
+
+            while (rs.next()){//DB house 데이터 다 가져오기
+                Host_ReviewDto host_reviewDto = new Host_ReviewDto();
+                host_reviewDto.setReview_pk(rs.getInt(1));
+                host_reviewDto.setTarget(rs.getInt(2));
+                host_reviewDto.setWriter(rs.getInt(3));
+                host_reviewDto.setContent(rs.getString(4));
+                host_reviewDto.setScore(rs.getInt(5));
+
+                house_review_list.add(host_reviewDto);
+            }
+
+            return house_review_list;
+        }catch (Exception e){
+            System.out.println("my_house_list 오류"+e);
+
+        }
+        return house_review_list;
+    }//리뷰수정 - 1. 내가쓴리뷰출력 method end
+        // 2. 새로 작성한 리뷰받아와서 update 하고 결과 반환(true / false )
+    public boolean house_Review_update(Host_ReviewDto host_reviewDto){
+        try {
+            // 1. SQL 작성 [변수가 들어갈 자리에는 ? 대체한다. ]
+            String sql = "update host_review set content = ?,score=? where writer=? && target = ?;";
+            // 2. SQL 기재
+            ps = conn.prepareStatement(sql);
+            // ? 매개변수 대입
+            ps.setString(1, host_reviewDto.getContent());     // 기재된 SQL내 두번째 ? 에 값 대입
+            ps.setInt(2, host_reviewDto.getScore());  // 기재된 SQL내 세번째 ? 에 값 대입
+            ps.setInt(3, host_reviewDto.getWriter());  // 기재된 SQL내 세번째 ? 에 값 대입
+            ps.setInt(4, host_reviewDto.getTarget());  // 기재된 SQL내 세번째 ? 에 값 대입
+
+            // 3. SQL 실행
+            ps.executeUpdate(); // executeUpdate() 기재된 sql 실행하고 insert된 레코드 개수 반환.
+            return true;
+
         } catch (Exception e) {
             System.out.println(e);
         }
