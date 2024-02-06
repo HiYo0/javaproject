@@ -49,7 +49,7 @@ public class GuestReviewView {
     public void inputReview(){
     //리뷰가능 예약내역 출력
         //control 호출
-        ArrayList<HashMap<String, String>> result= Control_Guest.getInstance().reservationList();
+        ArrayList<HashMap<String, String>> result= Control_Guest.getInstance().finishReservationList();
         //출력
         if(result==null){//데이터 없는경우 유효성 검사
             System.out.println("리뷰등록이 가능한 예약번호가 없습니다. 이전페이지로 돌아갑니다.");
@@ -59,7 +59,9 @@ public class GuestReviewView {
         System.out.println("예약번호\t\t예약날짜\t\t숙소이름");
         for(int i=0; i<result.size(); i++) {
             System.out.printf("%-10s %-10s %-10s\n",
-                    result.get(i).get("reservation_pk"), result.get(i).get("reservation_date"), result.get(i).get("houseName"));
+                    result.get(i).get("reservation_pk"),
+                    result.get(i).get("reservation_date"),
+                    result.get(i).get("houseName"));
         }//for end
 
     }//m end

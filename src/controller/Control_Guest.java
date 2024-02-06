@@ -53,9 +53,9 @@ public class Control_Guest {//class start
     }//m end
 
     //리뷰 가능 내역 출력 메소드 (조건 : 예약일자지남 && 예약상태1(승인완료))
-    public ArrayList<HashMap<String, String>> finishReservationList(int reservation_pk) {
+    public ArrayList<HashMap<String, String>> finishReservationList() {
         //dao결과 호출
-        ArrayList<HashMap<String, String>> result=Guest_Dao.getInstance().reservationList();
+        ArrayList<HashMap<String, String>> result=Guest_Dao.getInstance().finishReservationList();
 
         //GuestReviewView로 반환
         return result;

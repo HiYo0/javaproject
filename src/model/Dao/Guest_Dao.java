@@ -172,7 +172,7 @@ public class Guest_Dao extends Dao{
         int member_pk=findMemberPk();
         //sql 실행
         try{
-            String sql="select reservation_pk, reservation_date, houseName from house join\n" +
+            String sql = "select reservation_pk, reservation_date, houseName from house join\n" +
                     "(select * from reservation_date join\n" +
                     "(select reservation_pk, reservation_date_pk from (select * from reservation where reservation_status=0 and member_pk=?) as a \n" +
                     "join (select * from reservation_detail group by reservation_pk) as b\n" +
@@ -188,6 +188,8 @@ public class Guest_Dao extends Dao{
 
             //출력값 저장
             while(rs.next()){
+
+
                 //hashMap 객체 생성
                 HashMap<String, String> finishRecords=new HashMap<>();
 
@@ -195,7 +197,6 @@ public class Guest_Dao extends Dao{
                 finishRecords.put("reservation_pk",String.valueOf(rs.getInt("reservation_pk")));
                 finishRecords.put("reservation_date",rs.getString("reservation_date"));
                 finishRecords.put("houseName",rs.getString("houseName"));
-
                 //배열에 hashMap 저장
                 finishReservations.add(finishRecords);
             }
