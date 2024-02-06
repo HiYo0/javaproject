@@ -111,6 +111,26 @@ public class Review_Dao extends Dao{//class start
 
     // 리뷰등록하기
     public boolean review_write(Host_ReviewDto host_reviewDto){
+        try {
+            // 1. SQL 작성 [변수가 들어갈 자리에는 ? 대체한다. ]
+            String sql = "insert into host_review(target,writer,content,score) value(?,?,?,?);";
+            // 2. SQL 기재
+            ps = conn.prepareStatement(sql);
+            // ? 매개변수 대입
+            ps.setInt(1, host_reviewDto.getTarget());     // 기재된 SQL내 두번째 ? 에 값 대입
+            ps.setInt(2, host_reviewDto.getWriter());  // 기재된 SQL내 세번째 ? 에 값 대입
+            ps.setString(3, host_reviewDto.getContent());  // 기재된 SQL내 세번째 ? 에 값 대입
+            ps.setInt(4, host_reviewDto.getScore());  // 기재된 SQL내 세번째 ? 에 값 대입
+
+            // 3. SQL 실행
+            int count = ps.executeUpdate(); // executeUpdate() 기재된 sql 실행하고 insert된 레코드 개수 반환.
+            if (count == 1) {
+                return true;
+            }// 만약에 insert처리된 레코드가 1개이면 회원가입 성공
+            // 4. SQL 결과
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return false;
     }
 
