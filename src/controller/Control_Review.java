@@ -2,6 +2,7 @@ package controller;
 
 import model.Dao.Review_Dao;
 import model.Dto.Guest_ReviewDto;
+import model.Dto.Host_ReviewDto;
 import model.Dto.ReviewWrite_View_Dto;
 
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class Control_Review {//class start
         return Review_Dao.getInstance().house_name(ch);
     }
     // 작성자 식별번호로 작성자이름 받아오기
-    public String writer_name(int writer){
-        return  Review_Dao.getInstance().writer_name(writer);
+    public String member_name(int writer){
+        return  Review_Dao.getInstance().member_name(writer);
     }
 
     // 리뷰 상태가 3인 리뷰 불러오기
@@ -45,10 +46,26 @@ public class Control_Review {//class start
 
     }
 
-    // 리뷰쓰기
-    public boolean review_write(){
+    // 리뷰쓰기////////////////////
+        // 리뷰쓰기
+    public boolean review_write(Host_ReviewDto host_reviewDto){
+        if(Review_Dao.getInstance().review_write(host_reviewDto)){return true;}
         return false;
     }
+        //리뷰(예약)상태수정
+    public void review_status(int no){
+        Review_Dao.getInstance().review_status(no);
+    }
+    // 리뷰수정 ///////////////////
+        // 1. 출력 id(텍스트) 주고 내가 작성한 리뷰 배열로 찾아오기(호스트버전)
+    public ArrayList<Host_ReviewDto> Host_my_review(int ch){
+        return Review_Dao.getInstance().Host_my_review(ch);
+    }
+        // 2. 새로 작성한 리뷰받아와서 update 하고 결과 반환(true / false )
+    public boolean house_Review_update(Host_ReviewDto host_reviewDto){
+        return Review_Dao.getInstance().house_Review_update(host_reviewDto);
+    }
+
 
 
     // 전승호 end------------------------------------
