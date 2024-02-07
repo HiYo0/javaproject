@@ -6,6 +6,7 @@ import model.Dto.Guest_ReviewDto;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.SimpleTimeZone;
 
 public class GuestReviewView {
     //싱글톤
@@ -17,9 +18,10 @@ public class GuestReviewView {
     Scanner scanner=new Scanner(System.in);
 
     //main view
-    public void run(){        
+    public void run(){
+        System.out.println("============ 리뷰페이지 =============");
         myReview(); //내게 써진 리뷰 출력
-        
+
         while(true){
             System.out.println("1.리뷰등록 | 2.리뷰수정 | 3.리뷰삭제 | 4.돌아가기");
             System.out.print("선택 : ");
@@ -27,15 +29,14 @@ public class GuestReviewView {
             try {
             //입력
             int ch = scanner.nextInt();
-
-
                 if (ch == 1) {  //리뷰등록
                     inputReview();
                 } else if (ch == 2) {   //리뷰수정
                     updateReview();
                 } else if (ch == 3) {   //리뷰삭제
-
+                    deleteReview();
                 } else if (ch == 4) {   //돌아가기
+                    System.out.println("========= 리뷰페이지를 나갑니다. =========");
                     return;
                 } else {
                     System.out.println("올바르지 않은 입력입니다.");
@@ -53,15 +54,21 @@ public class GuestReviewView {
         if(myReview.size()==0){//내게 써진 리뷰가 없을경우
             return;
         }
-        System.out.println("============ 리뷰페이지 =============");
+        System.out.println("------------ 받은 리뷰 ------------");
+        //평균평점 출력
+        float scoreAvg=Control_Guest.getInstance().scoreAvg();    //평균평점 저장변수
+        System.out.print("내 평균 평점 : ");
+        System.out.printf("%.1f \n",scoreAvg);
+
+        //리뷰 리스트 출력
         System.out.println("작성자\t\t내용\t\t\t평점");
         for(int i=0; i<myReview.size(); i++){
             System.out.printf("%-10s %-20s %-5s\n",
                     myReview.get(i).get("houseName")+"***",
                     myReview.get(i).get("content"),
                     myReview.get(i).get("score"));
-        }
-        System.out.println("===================================");
+        }//for end
+        System.out.println("----------------------------------");
     }//m end
 
     //리뷰등록 메소드
@@ -126,13 +133,18 @@ public class GuestReviewView {
 
     //내가 등록한 리뷰 수정 메소드
     public void updateReview(){
+        //내가 쓴 리뷰 출력
         ArrayList<HashMap<String, String>> printWriteReview=Control_Guest.getInstance().printWriteReview();
+
+        //출력
+        System.out.println("------------ 내가 쓴 리뷰 ------------");
         //만약 배열이 없다면 return
         if(printWriteReview.size()==0){
+            System.out.println("내가 쓴 리뷰가 없습니다.");
+            System.out.println("------------------------------------");
             return;
         }
 
-        System.out.println("============ 내가 쓴 리뷰 =============");
         System.out.println("리뷰번호\t\t숙소이름\t\t내용\t\t\t평점");
         for(int i=0; i<printWriteReview.size(); i++){
             System.out.printf("%-5s %-10s %-20s %-5s\n",
@@ -141,12 +153,79 @@ public class GuestReviewView {
                     printWriteReview.get(i).get("content"),
                     printWriteReview.get(i).get("score"));
         }//for end
-        System.out.println("======================================");
+        System.out.println("------------------------------------");
 
+        //수정할 리뷰번호 입력
         System.out.print("수정할 리뷰번호를 입력 : ");
         int reviewNo=scanner.nextInt();
-        boolean result=Control_Guest.getInstance().updateReview(reviewNo);
+        scanner.nextLine();
 
+        //수정할 내용 입력
+        System.out.print("새로운 내용 :");
+            String content=scanner.nextLine();
+        System.out.print("새로운 평점(소수점은 적용되지 않습니다.) :");
+            int score=scanner.nextInt();
+
+        //입력받은 정보 저장 객체 생성
+        Guest_ReviewDto guestReviewDto=new Guest_ReviewDto();
+        //객체에 입력한 정보 저장
+        guestReviewDto.setReview_pk(reviewNo);
+        guestReviewDto.setContent(content);
+        guestReviewDto.setScore(score);
+        //결과 저장 변수
+        boolean result=Control_Guest.getInstance().updateReview(guestReviewDto);
+        if(result){
+            System.out.println("리뷰수정이 완료되었습니다.");
+        }
+        else{
+            System.out.println("[오류] 리뷰등록이 불가능한 리뷰번호입니다.");
+        }//if end
+    }//m end
+
+    //리뷰 삭제 메소드
+    public void deleteReview(){
+        //내가 쓴 리뷰 출력
+        ArrayList<HashMap<String, String>> printWriteReview=Control_Guest.getInstance().printWriteReview();
+
+        //출력
+        System.out.println("------------ 내가 쓴 리뷰 ------------");
+        //만약 배열이 없다면 return
+        if(printWriteReview.size()==0){
+            System.out.println("내가 쓴 리뷰가 없습니다.");
+            System.out.println("------------------------------------");
+            return;
+        }
+
+        System.out.println("리뷰번호\t\t숙소이름\t\t내용\t\t\t평점");
+        for(int i=0; i<printWriteReview.size(); i++){
+            System.out.printf("%-5s %-10s %-20s %-5s\n",
+                    printWriteReview.get(i).get("review_pk"),
+                    printWriteReview.get(i).get("houseName"),
+                    printWriteReview.get(i).get("content"),
+                    printWriteReview.get(i).get("score"));
+        }//for end
+        System.out.println("------------------------------------");
+
+        //삭제할 리뷰번호 입력
+        System.out.print("삭제할 리뷰번호를 입력 : ");
+        int reviewNo=scanner.nextInt();
+
+        //입력받은 정보 저장 객체 생성
+        Guest_ReviewDto guestReviewDto=new Guest_ReviewDto();
+
+        //객체에 입력한 정보 저장
+        guestReviewDto.setReview_pk(reviewNo);
+
+        //리뷰삭제 메소드 실행
+        boolean result= Control_Guest.getInstance().deleteReview(guestReviewDto);
+
+        //출력
+        if(result){
+            System.out.println("리뷰삭제가 완료되었습니다.");
+        }
+        else{
+            System.out.println("[오류] 리뷰삭제가 불가능한 리뷰번호입니다.");
+        }//if end
     }//m end
 
 

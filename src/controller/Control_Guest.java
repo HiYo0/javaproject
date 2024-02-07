@@ -23,7 +23,6 @@ public class Control_Guest {//class start
 
     //예약내역 출력 메소드
     public ArrayList<HashMap<String, String>> reservationList(){
-        System.out.println("control 호출");
         ArrayList<HashMap<String, String>> result=Guest_Dao.getInstance().reservationList();
         return result;
     }
@@ -49,6 +48,12 @@ public class Control_Guest {//class start
     }//m end
 
     //=====================리뷰관리===========================
+    //내 평균평점 출력 메소드
+    public float scoreAvg(){
+        float result=Guest_Dao.getInstance().scoreAvg();
+        return result;
+    }
+
     //내게 등록된 리뷰 출력
     public ArrayList<HashMap<String, String>> myReview(){
         ArrayList<HashMap<String, String>> result=Guest_Dao.getInstance().myReview();
@@ -101,16 +106,31 @@ public class Control_Guest {//class start
     }//m end
 
     //수정할 리뷰 수정 메소드
-    public boolean updateReview(int review_pk){
+    public boolean updateReview(Guest_ReviewDto guestReviewDto){
         //리뷰번호 존재여부 유효성검사
-        boolean check=Guest_Dao.getInstance().checkReviewPk(review_pk);
+        boolean check=Guest_Dao.getInstance().checkReviewPk(guestReviewDto);
         if(!check){
             return false;
         }
 
         //리뷰수정 메소드 호출
-        return false;
+        boolean result=Guest_Dao.getInstance().updateReview(guestReviewDto);
+        return result;
     }//m end
+
+    //리뷰삭제 메소드
+    public boolean deleteReview(Guest_ReviewDto guestReviewDto){
+        //리뷰번호 존재여부 유효성검사
+        boolean check=Guest_Dao.getInstance().checkReviewPk(guestReviewDto);
+        if(!check){
+            return false;
+        }
+
+        //리뷰삭제 메소드 호출
+        boolean result=Guest_Dao.getInstance().deleteReview(guestReviewDto);
+        return result;
+    }//m end
+
 
 
 
