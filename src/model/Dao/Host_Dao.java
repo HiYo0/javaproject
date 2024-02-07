@@ -2,6 +2,7 @@ package model.Dao;
 
 import controller.Control_member;
 import model.Dto.HouseDto;
+import model.Dto.HouseFixDto;
 import model.Dto.Reservation_dateDto;
 
 import java.util.ArrayList;
@@ -65,6 +66,40 @@ public class Host_Dao extends Dao{// class start
         return 0;
     }
 
+    //
+    public ArrayList<HouseFixDto> HouseFix_View (int 하우스번호){
+        ArrayList<HouseFixDto> houseFixDtos = new ArrayList<>();
+        try {
+            // 1. sql 작성한다
+            String sql = "select * from reservation_date inner join house on house.house_pk = reservation_date.house_pk where house.house_pk = "+하우스번호+";";
+            // 2. sql 기재한다
+            ps = conn.prepareStatement(sql);
+            // 3. sql 실행한다.
+            rs = ps.executeQuery();
+            // 4. sql 결과처리
+
+
+            while (rs.next()){//DB house 데이터 다 가져오기
+                HouseFixDto houseFixDto = new HouseFixDto();
+                houseFixDto.setReservation_date_pk(rs.getInt(1));
+                houseFixDto.setReservation_date(rs.getString(2));
+                houseFixDto.setHouse_pk(rs.getInt(3));
+                houseFixDto.setDay_price(rs.getInt(4));
+                houseFixDto.setHouseName(rs.getString(6));
+                houseFixDto.setMember_pk(rs.getInt(7));
+                houseFixDto.setRegion(rs.getString(8));
+                houseFixDto.setMaxPeople(rs.getInt(9));
+
+                houseFixDtos.add(houseFixDto);
+            }
+
+            return houseFixDtos;
+        }catch (Exception e){
+            System.out.println("my_house_list 오류"+e);
+        }
+        return null;
+    }
+
 
     // 전승호END ================================================================
 
@@ -86,7 +121,7 @@ public class Host_Dao extends Dao{// class start
                 member_pk = rs.getInt("member_pk");
             }
 
-            member_pk = 1;
+            //member_pk = 1;
 
             // member_pk를 먼저 받아와서 오류검사 > house 테이블에 넣기
             sql = "insert into house(houseName, member_pk, region, maxPeople) values(?, ?, ?, ?)";

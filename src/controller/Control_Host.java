@@ -2,6 +2,7 @@ package controller;
 
 import model.Dao.Host_Dao;
 import model.Dto.HouseDto;
+import model.Dto.HouseFixDto;
 import model.Dto.Reservation_dateDto;
 
 import java.util.ArrayList;
@@ -27,6 +28,13 @@ public class Control_Host {//class start
         return Host_Dao.getInstance().my_house_list(id);
     }
 
+    public ArrayList<HouseFixDto> HouseFix_View (int 번호){
+        ArrayList<HouseFixDto> result = Host_Dao.getInstance().HouseFix_View(번호);
+        return result;
+    }
+
+    public void HouseFix(int 항목선택, int 수정선택번호, int 수정내용){}
+////////////////////////////////////
 
 
     // 오승택 =======================================================
