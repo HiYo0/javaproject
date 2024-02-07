@@ -40,9 +40,9 @@ public class Control_Review {//class start
     // 리뷰 상태가 3인 리뷰 불러오기
         // 1. reservation 에서 status 가 1 인거의 reservation_pk 찾아오기
         // 2. 찾아온 reservation_pk 로 house 식별번호 찾아오기 (이용한 숙소 정보)
-    public ArrayList<ReviewWrite_View_Dto> review_write_view(){
+    public ArrayList<ReviewWrite_View_Dto> review_write_view(int ch){
 
-        return Review_Dao.getInstance().review_write_view();
+        return Review_Dao.getInstance().review_write_view(ch);
 
     }
 

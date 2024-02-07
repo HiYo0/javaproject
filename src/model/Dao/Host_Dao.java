@@ -99,6 +99,45 @@ public class Host_Dao extends Dao{// class start
         }
         return null;
     }
+// 수정하기 ~~~~
+    // 수정 인트ver
+    public boolean intHouseFix(ArrayList<HouseFixDto> houseFixDtos,int 항목선택, int 수정선택번호, int 수정내용) {
+        try{
+            if (항목선택 ==2) {
+                String sql = "update reservation_date set day_price = " + 수정내용 + " where reservation_date_pk = " + houseFixDtos.get(수정선택번호).getReservation_date_pk()+ ";";
+                ps = conn.prepareStatement(sql);
+                ps.executeUpdate();
+                return true;
+            } else if (항목선택 ==4) {
+                String sql = "update house set maxpeople = "+수정내용+" where house_pk = "+houseFixDtos.get(수정선택번호).getHouse_pk()+";";
+                ps = conn.prepareStatement(sql);
+                ps.executeUpdate();
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e+"intHouseFix");
+        }
+        return false;
+    }
+    // 수정 String ver
+    public boolean strHouseFix(ArrayList<HouseFixDto> houseFixDtos,int 항목선택, int 수정선택번호, String 수정내용){
+        try{
+            if (항목선택 ==1) {
+                String sql = "update reservation_date set reservation_date = '"+수정내용+"' where reservation_date_pk = "+houseFixDtos.get(수정선택번호).getReservation_date_pk()+";";
+                ps = conn.prepareStatement(sql);
+                ps.executeUpdate();
+                return true;
+            } else if (항목선택 ==3) {
+                String sql = "update house set houseName = '"+수정내용+"' where house_pk = "+houseFixDtos.get(수정선택번호).getHouse_pk()+";";
+                ps = conn.prepareStatement(sql);
+                ps.executeUpdate();
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e+"intHouseFix");
+        }
+        return false;
+    }
 
 
     // 전승호END ================================================================

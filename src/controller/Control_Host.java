@@ -32,8 +32,18 @@ public class Control_Host {//class start
         ArrayList<HouseFixDto> result = Host_Dao.getInstance().HouseFix_View(번호);
         return result;
     }
+/// 수정하기 ~~~
+    // 수정 인트ver
+    public boolean intHouseFix(ArrayList<HouseFixDto> houseFixDtos ,int 항목선택, int 수정선택번호, int 수정내용){
+        boolean result = Host_Dao.getInstance().intHouseFix(houseFixDtos,항목선택,수정선택번호,수정내용);
+        return result;
+    }
+    // 수정 String ver
+    public boolean strHouseFix(ArrayList<HouseFixDto> houseFixDtos ,int 항목선택, int 수정선택번호, String 수정내용){
+        boolean result = Host_Dao.getInstance().strHouseFix(houseFixDtos,항목선택,수정선택번호,수정내용);
+        return result;
+    }
 
-    public void HouseFix(int 항목선택, int 수정선택번호, int 수정내용){}
 ////////////////////////////////////
 
 

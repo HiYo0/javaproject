@@ -39,7 +39,7 @@ public class Host_Review_Command {//class start
         System.out.println("================================================================");
         int ch = 0; // 하우스 식별번호
 
-        if (my_house_list.size()>=1) { // 1개의 데이터도 없으면 스킵
+        if (!my_house_list.isEmpty()) { // 1개의 데이터도 없으면 스킵
             while (true) { // 한글 입력시 예외처리 하기위한 while
                 try {
                     System.out.print("선택 > ");
@@ -100,7 +100,7 @@ public class Host_Review_Command {//class start
 
                 if (choice == 1) {//리뷰등록
                     // 이용한 멤버 가져오기
-                    ArrayList<ReviewWrite_View_Dto> review_write_view = Control_Review.getInstance().review_write_view();
+                    ArrayList<ReviewWrite_View_Dto> review_write_view = Control_Review.getInstance().review_write_view(ch);
                     while (true) { // 한글 입력시 예외처리 하기위한 while
                         try {
                             int 선택한번호 = 0;

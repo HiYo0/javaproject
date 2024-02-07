@@ -33,6 +33,7 @@ public class HostSubPageView {
                 if (ch == 1) { // 숙소등록
                     insertHouse();
                 } else if (ch == 2) { //숙소수정
+                    //전승호 =========================================================================//
                     // 1. 내가등록한 숙소를 DB에서 꺼내오기
                     // 2. 수정할 데이터 선택 및 입력받아서 수정 -> 성공여부 출력
                     // houseView(); // 내가 로그인한 아이디로 등록한 숙소 출력 => 반환 = 숙소리스트
@@ -58,16 +59,30 @@ public class HostSubPageView {
 
                         while (true) {
                             try {
-                                수정선택번호 = scanner.nextInt();
+                                System.out.print("수정 희망하는 번호를 선택해주세요 > ");수정선택번호 = scanner.nextInt();
 
                                 System.out.println("\n수정하실 내용을 선택해주세요");
                                 System.out.println("1.날짜 2.가격 3.지역 4.최대인원");
                                 System.out.print("선택 > ");
                                 int 항목선택 = scanner.nextInt();
+                                scanner.nextLine();
 
-                                if(항목선택 == 1 || 항목선택== 3) {
-                                    int 수정내용 = scanner.nextInt();
-                                    Control_Host.getInstance().HouseFix(항목선택, 수정선택번호 - 1, 수정내용);
+                                if(항목선택 == 2 || 항목선택== 4) {//선택항목이 int 타입일경우
+                                    System.out.print("안내] 수정내용을 작성해주세요(숫자) : ");int 수정내용 = scanner.nextInt();
+                                    if(Control_Host.getInstance().intHouseFix(houseFixDtos,항목선택, 수정선택번호 - 1, 수정내용)){
+                                        System.out.println("\n안내] 수정이 성공적으로 완료되었습니다.");
+                                    }else {
+                                        System.out.println("\n안내] 수정작업을 실패하였습니다..");
+                                    }
+                                }else if(항목선택 == 1 || 항목선택 == 3){// 선택항목이 str 인경우
+                                    System.out.println("\n\n날짜의 경우 20xx-01-01 형식에 맞춰주세요");
+                                    System.out.print("안내] 수정내용을 작성해주세요. : ");String 수정내용 = scanner.nextLine();
+                                    if(Control_Host.getInstance().strHouseFix(houseFixDtos,항목선택, 수정선택번호 - 1, 수정내용)){
+                                        System.out.println("\n안내] 수정이 성공적으로 완료되었습니다.");
+                                    }else {
+                                        System.out.println("\n안내] 수정작업을 실패하였습니다..");
+                                    }
+
                                 }
 
                                 break;
@@ -82,6 +97,7 @@ public class HostSubPageView {
                     }
 
 
+                    // 전승호 숙소수정 end ==================================================================================
 
                 } else if (ch == 3) { // 숙소삭제
 

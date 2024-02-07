@@ -84,11 +84,11 @@ public class Review_Dao extends Dao{//class start
     }
 
     // 리뷰 작성할수 있는 거 찾아오기
-    public ArrayList<ReviewWrite_View_Dto>review_write_view(){
+    public ArrayList<ReviewWrite_View_Dto>review_write_view(int ch){
         ArrayList<ReviewWrite_View_Dto> review_write_view = new ArrayList<>();
 
         try {
-            String sql = "select * from reservation inner join reservation_detail on reservation.reservation_pk = reservation_detail.reservation_pk inner join reservation_date on reservation_date.reservation_date_pk = reservation_detail.reservation_date_pk where  reservation_status =1;";
+            String sql = "select * from reservation inner join reservation_detail on reservation.reservation_pk = reservation_detail.reservation_pk inner join reservation_date on reservation_date.reservation_date_pk = reservation_detail.reservation_date_pk where reservation_status = 1 && house_pk = "+ch+";";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             // 처리
