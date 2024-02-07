@@ -64,7 +64,7 @@ public class GuestPageView {
 
             //예약내역 출력
             System.out.println("============= 예약내역 ===============");
-            System.out.println("예약번호\t\t예약날짜\t\t\t\t숙소이름\t\t예약인원\t\t예약상태");
+            System.out.println("예약번호\t\t예약날짜\t\t숙소이름\t\t예약인원\t\t예약상태");
             for (int i = 0; i < result.size(); i++) {
 
                 //예약상태 데이터 String으로 표기
