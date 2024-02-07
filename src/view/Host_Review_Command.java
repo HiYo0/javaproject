@@ -209,6 +209,7 @@ public class Host_Review_Command {//class start
                                 } else {
                                     System.out.println("안내] 선택하신 번호에 해당하는 리뷰가 없습니다. ");
                                     System.out.println("\n   다시 선택해주세요. ");
+                                    break;
                                 }
                             }//while end
                         }catch (InputMismatchException e){
@@ -249,6 +250,7 @@ public class Host_Review_Command {//class start
                                 } else {
                                     System.out.println("안내] 선택하신 번호에 해당하는 리뷰가 없습니다. ");
                                     System.out.println("\n   다시 선택해주세요. ");
+                                    break;
                                 }
                             }//while end
                         }catch (InputMismatchException e){
