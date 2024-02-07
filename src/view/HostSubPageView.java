@@ -23,13 +23,13 @@ public class HostSubPageView {
             if(ch == 1){ // 숙소등록
                 insertHouse();
             }
-            else if(ch == 2){
+            else if(ch == 2){ //숙소수정
 
             }
-            else if(ch == 3){
+            else if(ch == 3){ // 숙소삭제
 
             }
-            else if(ch == 4){
+            else if(ch == 4){// 돌아가기
                 break;
             }
             else{
@@ -39,7 +39,11 @@ public class HostSubPageView {
 
 
     } // run() end
+    // 전승호 ===========================================================================
 
+    // 전승호End ===========================================================================
+
+    // 오승택============================================================================
     public void insertHouse(){
         // 스캐너 선언
         Scanner scanner = new Scanner(System.in);
@@ -63,5 +67,6 @@ public class HostSubPageView {
             System.out.println("숙소 등록이 완료되었습니다.");
         }
     }
+    // 오승택 end============================================================================================
 
 }
