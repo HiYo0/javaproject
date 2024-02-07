@@ -13,6 +13,7 @@ public class JoinView {
     private static JoinView JoinView = new JoinView();
     public static JoinView getInstance(){return JoinView;}
 
+    // 회원가입 메소드
     public void join(){
         // 입력
         System.out.print("아이디 : "); String mid = scanner.next();
@@ -34,7 +35,7 @@ public class JoinView {
         System.out.println(" = " +memberDto );
 
 
-        // 리턴값에 따른 결과 출력
+        // 결과 출력
         if(result == 0) {
             System.out.println("<안내> 회원가입 성공");
         }

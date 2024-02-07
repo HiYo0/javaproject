@@ -31,6 +31,7 @@ public class MainPageView {
                     } else if (ch == 3) {//마이페이지
                         MyPageView.getInstance().run();
                     } else if (ch == 4) {//로그아웃
+                        System.out.println("로그아웃이 완료되었습니다.");
                         break;
                     } else {
                         System.out.println("올바르지 않은 입력입니다.");

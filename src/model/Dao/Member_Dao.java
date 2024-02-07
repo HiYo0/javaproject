@@ -38,15 +38,15 @@ public class Member_Dao extends Dao {//class start
     // ================================ 아이디 중복검사 ================================ //
     public boolean idCheck( String mid ){
         try {
-            // 1. SQL 작성한다.
+            // SQL 작성
             String sql = "select mid from member where mid = ? ";
-            // 2. SQL 기재한다.
+            // SQL 기재
             ps = conn.prepareStatement(sql);
             // SQL 대입(? 매개변수 대입)
-            ps.setString(1, mid); // sql문법내 첫번째 ?에 mid 변수 값 대입 ;
-            // 3. SQL 실행한다.
+            ps.setString(1, mid);
+            // SQL 실행
             rs = ps.executeQuery(); // 질의/검색 (select) 결과를 rs 인터페이스 대입한다.
-            // 4. SQL 결과처리
+            // SQL 결과
             if (rs.next()) {        // rs.next() : 검색 결과 테이블에서 다음레코드 이동. [ 다음레코드 이동후 존재하면 true , 존재하지 않으면 false ]
                 return true; // 중복 있음.
             }
@@ -60,19 +60,19 @@ public class Member_Dao extends Dao {//class start
     public boolean login(MemberDto memberDto){
         try {
             // SQL 작성
-            String sql = "select * from member where mid = ? and mpw = ? "; // 아이디와 패스워드 행 가져오기
+            String sql = "select * from member where mid = ? and mpw = ? ";
             // SQL 기재
             ps = conn.prepareStatement(sql); // db 연결
             // SQL 대입(? 매개변수 대입)
-            ps.setString(1, memberDto.getMid()); // 첫번째 행에 id대입
-            ps.setString(2, memberDto.getMpw()); // 두번째 행에 pw대입
+            ps.setString(1, memberDto.getMid());
+            ps.setString(2, memberDto.getMpw());
             // SQL 실행
-            rs = ps.executeQuery(); // 실행
+            rs = ps.executeQuery();
             while(rs.next()){
                 return true;
             }
             // SQL 결과
-        }catch ( Exception e ){  System.out.println(e);   } // SQL 문제 발생.
+        }catch ( Exception e ){  System.out.println(e);   }
         // 6. 함수종료
         return false;
     } // login e
@@ -90,9 +90,8 @@ public class Member_Dao extends Dao {//class start
             ps.setString(1, mid);
             // SQL 실행.
             rs = ps.executeQuery();
-            // SQL 결과처리
+            // SQL 결과
             if (rs.next()) {
-                // rs.next() : 다음 레코드 이동
                 // rs.get타입( 호출할 필드번호 or 필드이름 ) : 현재 레코드의 필드 값 호출
                 return rs.getInt("mno");
             }
@@ -101,8 +100,8 @@ public class Member_Dao extends Dao {//class start
         return 0;
     }
 
-    // ================================ 아이디 찾기 ================================ //
 
+    // ================================ 아이디 찾기 ================================ //
     public String SearchId (MemberDto memberDto){
         try {
             // SQL 작성
@@ -113,18 +112,18 @@ public class Member_Dao extends Dao {//class start
             ps.setString(1, memberDto.getMname());
             ps.setString(2, memberDto.getMphone());
             // SQL 실행
-            rs = ps.executeQuery(); // 실행
+            rs = ps.executeQuery();
             while(rs.next()){
-                return rs.getString("mid"); //get타입.필드명
+                return rs.getString("mid");
             }
             // SQL 결과
-        }catch ( Exception e ){  System.out.println(e);   } // SQL 문제 발생.
+        }catch ( Exception e ){  System.out.println(e);  }
         // 6. 함수종료
         return null;
     }
 
-    // ================================ 비밀번호 찾기 ================================ //
 
+    // ================================ 비밀번호 찾기 ================================ //
     public String SearchPw (MemberDto memberDto){
         try {
             // SQL 작성
@@ -135,23 +134,23 @@ public class Member_Dao extends Dao {//class start
             ps.setString(1, memberDto.getMid());
             ps.setString(2, memberDto.getMemail());
             // SQL 실행
-            rs = ps.executeQuery(); // 실행
+            rs = ps.executeQuery();
             while(rs.next()){
-                return rs.getString("mpw"); //get타입.필드명
+                return rs.getString("mpw");
             }
             // SQL 결과
-        }catch ( Exception e ){  System.out.println(e);   } // SQL 문제 발생.
+        }catch ( Exception e ){  System.out.println(e);   }
         // 6. 함수종료
         return null;
     }
 
-    // ================================ 비밀번호 변경 ================================ //
 
-    public boolean ChangePasswordView(MemberDto memberDto){
+    // ================================ 비밀번호 변경 ================================ //
+    public boolean changePasswordView(MemberDto memberDto){
         try {
             // SQL 작성
             String sql = "update member set mpw = ? where memail = ? "; // 받은 email값이 일치하면 mpw필드 수정
-            // update  set 수정할필드명 = 새로운값 , 수정할필드명 = 새로운값 where 조건식
+            // update set 수정할필드명 = 새로운값 , 수정할필드명 = 새로운값 where 조건식
             // SQL 기재
             ps = conn.prepareStatement(sql);
             // SQL 대입
@@ -161,14 +160,14 @@ public class Member_Dao extends Dao {//class start
             int count = ps.executeUpdate();
             if(count == 1){return true;}
             // SQL 결과
-        }catch ( Exception e ){  System.out.println(e);   } // SQL 문제 발생.
+        }catch ( Exception e ){  System.out.println(e);   }
         // 6. 함수종료
         return false;
     }
 
-    // ================================ 회원탈퇴 ================================ //
 
-    public boolean DeleteMemberView(MemberDto memberDto){
+    // ================================ 회원탈퇴 ================================ //
+    public boolean deleteMemberView(MemberDto memberDto){
         try {
             // SQL 작성
             String sql = "delete from member where mid = ? and mpw = ? and mphone = ?";
@@ -183,7 +182,7 @@ public class Member_Dao extends Dao {//class start
             int count = ps.executeUpdate();
             if(count == 1){return true;}
             // SQL 결과
-        }catch ( Exception e ){  System.out.println(e);   } // SQL 문제 발생.
+        }catch ( Exception e ){  System.out.println(e);  }
         // 6. 함수종료
         return false;
     }
