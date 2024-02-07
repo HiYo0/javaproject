@@ -43,8 +43,14 @@ public class Control_Host {//class start
         boolean result = Host_Dao.getInstance().strHouseFix(houseFixDtos,항목선택,수정선택번호,수정내용);
         return result;
     }
+    
+/// 삭제하기
+    public boolean deleteHouse(int house_pk){
+        return Host_Dao.getInstance().deleteHouse(house_pk);
+    }
 
 ////////////////////////////////////
+    // 전승호 end =======================================================
 
 
     // 오승택 =======================================================

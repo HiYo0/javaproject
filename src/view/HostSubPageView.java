@@ -33,74 +33,9 @@ public class HostSubPageView {
                 if (ch == 1) { // 숙소등록
                     insertHouse();
                 } else if (ch == 2) { //숙소수정
-                    //전승호 =========================================================================//
-                    // 1. 내가등록한 숙소를 DB에서 꺼내오기
-                    // 2. 수정할 데이터 선택 및 입력받아서 수정 -> 성공여부 출력
-                    // houseView(); // 내가 로그인한 아이디로 등록한 숙소 출력 => 반환 = 숙소리스트
-                    // returnHouseNo(houseView()); // 내가 선택한 번호를 하우스번호로 반환
-                    int houseNo = returnHouseNo(houseView());
-
-                    // 하우스식별번호 주고 정보 받아오기
-                    ArrayList<HouseFixDto> houseFixDtos = Control_Host.getInstance().HouseFix_View(houseNo);
-                    int 수정선택번호 = 0;
-
-                    if (!houseFixDtos.isEmpty()) {
-                        System.out.println("======================= " + houseFixDtos.get(0).getHouseName() + " =======================");
-                        System.out.printf(" %2s\t%-12s %-8s %-4s \t\t%2s\n", "번호", "날짜", "가격", "지역", "최대인원");
-                        for (int i = 0; i < houseFixDtos.size(); i++) {
-                            String 날짜 = houseFixDtos.get(i).getReservation_date();
-                            int 가격 = houseFixDtos.get(i).getDay_price();
-                            String 지역 = houseFixDtos.get(i).getRegion();
-                            int 최대인원 = houseFixDtos.get(i).getMaxPeople();
-
-                            System.out.printf(" %2s\t%-12s\t %-10d %-4s \t\t%2s\n", i + 1, 날짜, 가격, 지역, 최대인원);
-                        }//for end
-                        System.out.println("================================================================");
-
-                        while (true) {
-                            try {
-                                System.out.print("수정 희망하는 번호를 선택해주세요 > ");수정선택번호 = scanner.nextInt();
-
-                                System.out.println("\n수정하실 내용을 선택해주세요");
-                                System.out.println("1.날짜 2.가격 3.지역 4.최대인원");
-                                System.out.print("선택 > ");
-                                int 항목선택 = scanner.nextInt();
-                                scanner.nextLine();
-
-                                if(항목선택 == 2 || 항목선택== 4) {//선택항목이 int 타입일경우
-                                    System.out.print("안내] 수정내용을 작성해주세요(숫자) : ");int 수정내용 = scanner.nextInt();
-                                    if(Control_Host.getInstance().intHouseFix(houseFixDtos,항목선택, 수정선택번호 - 1, 수정내용)){
-                                        System.out.println("\n안내] 수정이 성공적으로 완료되었습니다.");
-                                    }else {
-                                        System.out.println("\n안내] 수정작업을 실패하였습니다..");
-                                    }
-                                }else if(항목선택 == 1 || 항목선택 == 3){// 선택항목이 str 인경우
-                                    System.out.println("\n\n날짜의 경우 20xx-01-01 형식에 맞춰주세요");
-                                    System.out.print("안내] 수정내용을 작성해주세요. : ");String 수정내용 = scanner.nextLine();
-                                    if(Control_Host.getInstance().strHouseFix(houseFixDtos,항목선택, 수정선택번호 - 1, 수정내용)){
-                                        System.out.println("\n안내] 수정이 성공적으로 완료되었습니다.");
-                                    }else {
-                                        System.out.println("\n안내] 수정작업을 실패하였습니다..");
-                                    }
-
-                                }
-
-                                break;
-                            } catch (InputMismatchException e) {
-                                System.out.println("안내] 숫자로 입력해주세요");
-                                scanner.nextLine();
-                            }
-                        }
-
-                    }else {
-                        System.out.println("안내] 등록된 예약일이 없습니다.");
-                    }
-
-
-                    // 전승호 숙소수정 end ==================================================================================
-
+                    updateHouse();
                 } else if (ch == 3) { // 숙소삭제
-
+                    deleteHouse();
                 } else if (ch == 4) {// 돌아가기
                     break;
                 } else {
@@ -141,7 +76,7 @@ public class HostSubPageView {
         Scanner scanner = new Scanner(System.in);
         int ch = 0; // 하우스 식별번호
 
-        if (my_house_list.size()>=1) { // 1개의 데이터도 없으면 스킵
+        if (!my_house_list.isEmpty()) { // 1개의 데이터도 없으면 스킵
             while (true) { // 한글 입력시 예외처리 하기위한 while
                 try {
                     System.out.print("선택 > ");
@@ -152,7 +87,7 @@ public class HostSubPageView {
                             if ((ch - 1) == i) {
                                 ch = my_house_list.get(i).getHouse_pk();
 
-                                break;
+                                return ch;
                             }
                         }//for end
                         break;
@@ -167,6 +102,119 @@ public class HostSubPageView {
         }// if end
         return ch;
     }// returnHouseNo method end
+    public void updateHouse(){
+        //전승호 =========================================================================//
+        Scanner scanner = new Scanner(System.in);
+        // 1. 내가등록한 숙소를 DB에서 꺼내오기
+        // 2. 수정할 데이터 선택 및 입력받아서 수정 -> 성공여부 출력
+        // houseView(); // 내가 로그인한 아이디로 등록한 숙소 출력 => 반환 = 숙소리스트
+
+        // returnHouseNo(houseView()); // 내가 선택한 번호를 하우스번호로 반환
+        int houseNo = returnHouseNo(houseView());
+
+
+        // 하우스식별번호 주고 정보 받아오기
+        ArrayList<HouseFixDto> houseFixDtos = Control_Host.getInstance().HouseFix_View(houseNo);
+
+        int 수정선택번호 = 0;
+
+        if (!houseFixDtos.isEmpty()) {
+            System.out.println("======================= " + houseFixDtos.get(0).getHouseName() + " =======================");
+            System.out.printf(" %2s\t%-12s %-8s %-4s \t\t%2s\n", "번호", "날짜", "가격", "지역", "최대인원");
+            for (int i = 0; i < houseFixDtos.size(); i++) {
+                String 날짜 = houseFixDtos.get(i).getReservation_date();
+                int 가격 = houseFixDtos.get(i).getDay_price();
+                String 지역 = houseFixDtos.get(i).getRegion();
+                int 최대인원 = houseFixDtos.get(i).getMaxPeople();
+
+                System.out.printf(" %2s\t%-12s\t %-10d %-4s \t\t%2s\n", i + 1, 날짜, 가격, 지역, 최대인원);
+            }//for end
+            System.out.println("================================================================");
+
+            while (true) {
+                try {
+                    System.out.print("수정 희망하는 번호를 선택해주세요 > ");수정선택번호 = scanner.nextInt();
+                    if (수정선택번호<houseFixDtos.size()+1&&수정선택번호>0) {
+
+                        System.out.println("\n수정하실 내용을 선택해주세요");
+                        System.out.println("1.날짜 2.가격 3.지역 4.최대인원 5.이름");
+                        System.out.print("선택 > ");
+                        int 항목선택 = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (항목선택 == 2 || 항목선택 == 4) {//선택항목이 int 타입일경우
+                            System.out.print("안내] 수정내용을 작성해주세요(숫자) : ");
+                            int 수정내용 = scanner.nextInt();
+                            if (Control_Host.getInstance().intHouseFix(houseFixDtos, 항목선택, 수정선택번호 - 1, 수정내용)) {
+                                System.out.println("\n안내] 수정이 성공적으로 완료되었습니다.");
+                            } else {
+                                System.out.println("\n안내] 수정작업을 실패하였습니다..");
+                            }
+                        } else if (항목선택 == 1 || 항목선택 == 3 || 항목선택 == 5) {// 선택항목이 str 인경우
+                            System.out.println("\n\n날짜의 경우 20xx-01-01 형식에 맞춰주세요");
+                            System.out.print("안내] 수정내용을 작성해주세요. : ");
+                            String 수정내용 = scanner.nextLine();
+                            if (Control_Host.getInstance().strHouseFix(houseFixDtos, 항목선택, 수정선택번호 - 1, 수정내용)) {
+                                System.out.println("\n안내] 수정이 성공적으로 완료되었습니다.");
+                            } else {
+                                System.out.println("\n안내] 수정작업을 실패하였습니다..");
+                            }
+
+                        } else {
+                            System.out.println("\n안내] 없는번호 입니다. \n");
+                        }
+
+                        break;
+                    }else {
+                        System.out.println("\n안내] 없는번호 입니다. \n");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("안내] 숫자로 입력해주세요");
+                    scanner.nextLine();
+                }
+            }
+
+        }else {
+            System.out.println("안내] 등록된 예약일이 없습니다.");
+        }
+    }// 전승호 숙소수정 end
+    public void deleteHouse(){// 선택받은 숙소 삭제시키기
+        Scanner scanner = new Scanner(System.in);
+        int 삭제선택번호 = 0;
+        while (true) {// 숫자 유효성검사용 반복문 -문자입력시 번호받기 반복
+            try {
+                ArrayList<HouseDto> houseView = houseView(); // => 내가등록한 숙소 출력 및 객체배열 반환
+                if (!houseView.isEmpty()) { // 만약 배열값이 존재한다면 실행
+                    System.out.println("안내] 삭제하실 번호를 선택해주세요 \n\t'없는 번호선택시 종료'");
+                    System.out.print("선택 > ");삭제선택번호 = scanner.nextInt();
+                    if(삭제선택번호>houseView.size()+1||삭제선택번호<0){
+                        // 번호선택 유효성검사 없는번호 선택시 종료
+                        System.out.println("\n안내]없는번호를 입력하셧습니다.\n");
+                        scanner.nextLine();
+                        break;
+                    }
+                    삭제선택번호 = houseView.get(삭제선택번호-1).getHouse_pk();
+                    // 삭제선택번호 를 선택받은 순번의 house_pk 로 바꾸기
+                    if(Control_Host.getInstance().deleteHouse(삭제선택번호)){
+                        System.out.println("\n안내] 등록하신 숙소가 삭제되었습니다.\n");
+                        break;
+                    }else {
+                        System.out.println("\n안내] 삭제실패 하였습니다.\n");
+                        break;
+                    }
+
+                } else {
+                    System.out.println("\n안내] 등록된 숙소가 없습니다.\n");
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("안내] 숫자로 입력해주세요! ");
+            }
+        }//while end
+
+
+
+    }// dereteHouse method end
 
 
     // 전승호End ==========================================================================

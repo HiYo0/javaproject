@@ -122,23 +122,40 @@ public class Host_Dao extends Dao{// class start
     // 수정 String ver
     public boolean strHouseFix(ArrayList<HouseFixDto> houseFixDtos,int 항목선택, int 수정선택번호, String 수정내용){
         try{
-            if (항목선택 ==1) {
+            if (항목선택 ==1) {//날짜
                 String sql = "update reservation_date set reservation_date = '"+수정내용+"' where reservation_date_pk = "+houseFixDtos.get(수정선택번호).getReservation_date_pk()+";";
                 ps = conn.prepareStatement(sql);
                 ps.executeUpdate();
                 return true;
-            } else if (항목선택 ==3) {
+            } else if (항목선택 ==3) {// 지역
+                String sql = "update house set region = '"+수정내용+"' where house_pk = "+houseFixDtos.get(수정선택번호).getHouse_pk()+";";
+                ps = conn.prepareStatement(sql);
+                ps.executeUpdate();
+                return true;
+            } else if (항목선택==5) {// 이름
                 String sql = "update house set houseName = '"+수정내용+"' where house_pk = "+houseFixDtos.get(수정선택번호).getHouse_pk()+";";
                 ps = conn.prepareStatement(sql);
                 ps.executeUpdate();
                 return true;
             }
         }catch (Exception e){
-            System.out.println(e+"intHouseFix");
+            System.out.println(e+"strHouseFix");
         }
         return false;
     }
+/// 삭제 하기
+    public boolean deleteHouse(int house_pk){
+        try{
+            String sql = "delete from house where house_pk = "+house_pk+";";
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+            return true;
 
+        }catch (Exception e){
+            System.out.println(e+"deleteHouse");
+        }
+        return false;
+    }
 
     // 전승호END ================================================================
 
