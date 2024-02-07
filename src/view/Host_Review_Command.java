@@ -22,13 +22,9 @@ public class Host_Review_Command {//class start
     public static Host_Review_Command getInstance(){return review_command;}
 
 
-    public static void main(String[] args) {// 테스트용
-        Host_Review_Command.getInstance().run();
-    }//테스트용
-
     public void run(){
         Scanner scanner = new Scanner(System.in);
-        String id = "noname1";//Control_member.getInstance().getLogin_id();
+        String id = Control_member.getInstance().getLogin_id();//"noname1";//
         System.out.println("======================= 내가 등록한 숙소 =======================");
         System.out.printf(" %2s\t%-12s %-15s %-4s \t\t%2s\n","번호","식별번호","이름","지역","최대인원");
         // 로그인한 id 주고 그에대한 house 정보 가져오기
