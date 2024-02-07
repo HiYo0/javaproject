@@ -145,7 +145,7 @@ public class Control_Guest {//class start
 
         boolean result = Guest_Dao.getInstance().insertReservation(reservationDto);
         if(result){
-            if(Guest_Dao.getInstance().insertReservation_detail(reservationDto, house_pk, date, day)){
+            if(Guest_Dao.getInstance().insertReservation_detail(house_pk, date, day)){
                 return true;
             }
         }
