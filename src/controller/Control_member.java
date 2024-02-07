@@ -16,7 +16,6 @@ public class Control_member {//class start
     // public String 메소드명(){return "String";}
 
     // ================================ 회원가입 ================================ //
-
     public int join(MemberDto memberDto){
         // 반환 변수.
         int result = 0;
@@ -32,8 +31,7 @@ public class Control_member {//class start
     }
 
     // ================================ 로그인 ================================ //
-
-    //  로그인 상태 필드
+    //  로그인 상태 필드 // Mno(회원번호)로 식별
     int loginMno = 0;
 
     public boolean login(MemberDto memberDto){
@@ -66,23 +64,22 @@ public class Control_member {//class start
     }
 
     // ================================ 비밀번호 변경 ================================ //
-    public boolean ChangePasswordView(MemberDto memberDto){
+    public boolean changePasswordView(MemberDto memberDto){
 
         // 저장 후 dao에 전달
-        boolean result = Member_Dao.getInstance().ChangePasswordView(memberDto);
-        System.out.println(memberDto);
+        boolean result = Member_Dao.getInstance().changePasswordView(memberDto);
 
         // 반환
         return result;
 
     } // ChangePasswordView e
 
+
     // ================================ 회원탈퇴 ================================ //
-    public boolean DeleteMemberView(MemberDto memberDto){
+    public boolean deleteMemberView(MemberDto memberDto){
 
         // 저장 후 dao에 전달
-        boolean result = Member_Dao.getInstance().DeleteMemberView(memberDto);
-        System.out.println(memberDto);
+        boolean result = Member_Dao.getInstance().deleteMemberView(memberDto);
 
         // 반환
         return result;
@@ -98,7 +95,6 @@ public class Control_member {//class start
     public void setLogin_id(String login_id) {
         this.login_id = login_id;
     }
-
 
 
 }//class end

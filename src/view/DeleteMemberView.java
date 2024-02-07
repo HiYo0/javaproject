@@ -13,8 +13,8 @@ public class DeleteMemberView {
     private static DeleteMemberView DeleteMemberView = new DeleteMemberView();
     public static DeleteMemberView getInstance(){return DeleteMemberView;}
 
-
-    public void DeleteMemberView(){
+    // 회원탈퇴 메소드
+    public void deleteMemberView(){
         // 입력
         System.out.print("아이디 : "); String mid = scanner.next();
         System.out.print("비밀번호 : "); String mpw = scanner.next();
@@ -27,7 +27,7 @@ public class DeleteMemberView {
         memberDto.setMphone(mphone);
 
         // 저장 후 control에 전달
-        boolean result = Control_member.getInstance().DeleteMemberView(memberDto);
+        boolean result = Control_member.getInstance().deleteMemberView(memberDto);
 
         // 결과 출력
         if (result){
