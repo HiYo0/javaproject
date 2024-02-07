@@ -275,7 +275,7 @@ public class Guest_Dao extends Dao{
 
                 rs = ps.getGeneratedKeys();
                 if( rs.next() ){
-                    System.out.println( rs.getInt(1 ) );
+                    //System.out.println( rs.getInt(1 ) );
                 }
 
                 return true;
@@ -288,12 +288,15 @@ public class Guest_Dao extends Dao{
         return false;
     }
 
-    public boolean insertReservation_detail(ReservationDto reservationDto, int house_pk, String date, int day){
+    public boolean insertReservation_detail(int house_pk, String date, int day){
         // reservation_detail 테이블에 레코드 추가
         // guest가 숙소를 예약하였을 때 발생
         try{
-            int reservation_pk = 0; int reservation_date_pk = 0;
+            int reservation_pk = 0;
+            int reservation_date_pk = 0; // 최대 2주 예약한다고 가정
+            int[] house_pk_arr = new int[14];
             String sql = "";
+            int count = 0;
 
             // 방금 등록된 예약에서 reservation_pk를 먼저 가져오기
             sql = "select reservation_pk from reservation";
@@ -302,22 +305,47 @@ public class Guest_Dao extends Dao{
             while(rs.next()){
                 reservation_pk = rs.getInt("reservation_pk");
             }
-            System.out.println(reservation_pk);
+            //System.out.println("reservation_pk :"+reservation_pk);
 
             sql = "select reservation_date_pk from reservation_date where house_pk = ? and reservation_date = ?";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, house_pk);
             ps.setString(2, date);
+            rs = ps.executeQuery();
             if (rs.next()){
+                //System.out.println("여기 탄다");
                 reservation_date_pk = rs.getInt("reservation_date_pk");
             }
+            //System.out.println("house_pk :"+house_pk);
+            //System.out.println("reservation_date : "+date);
+            //System.out.println("reservation_date_pk : "+reservation_date_pk);
 
-            sql = "insert into reservaion_detail(reservation_pk, reservation_date_pk) values(?, ?)";
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, reservation_pk);
-            ps.setInt(2, reservation_date_pk);
-            if(ps.executeUpdate() == 1){
-                return true;
+            for(int i=0; i<day; i++) {
+                sql = "select house_pk from reservation_date where reservation_date_pk = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, (reservation_date_pk+i));
+                rs = ps.executeQuery();
+                if (rs.next()){
+                    house_pk_arr[i] = rs.getInt("house_pk");
+                }
+            }
+            for(int i=0; i<day; i++) {
+                if (house_pk_arr[i] == house_pk_arr[i+1]){
+                    // 유효성검사 추가하기???? controller에서 해야하나?
+                }
+            }
+
+            for(int i=0; i<day; i++) {
+                sql = "insert into reservation_detail(reservation_pk, reservation_date_pk) values(?, ?)";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, reservation_pk);
+                ps.setInt(2, (reservation_date_pk+i));
+                if (ps.executeUpdate() == 1) {
+                    count++;
+                }
+                if(count == day){
+                    return true;
+                }
             }
 
 
