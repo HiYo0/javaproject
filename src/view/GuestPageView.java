@@ -33,6 +33,7 @@ public class GuestPageView {
     //실행 메소드
     public void run(){
         while (true) {
+            System.out.println("================= guest 페이지 =================");
             System.out.println("1.숙소검색 | 2.예약관리 | 3.리뷰관리 | 4.돌아가기");
             System.out.print("선택 : ");
             int ch = scanner.nextInt();
@@ -44,7 +45,8 @@ public class GuestPageView {
             } else if (ch == 3) {
                 GuestReviewView.getInstance().run();
             } else if(ch==4){
-
+                System.out.println("================= guest 페이지를 나갑니다. =================");
+                return;
             }
         }//while end
     }//m end
@@ -62,7 +64,7 @@ public class GuestPageView {
 
             //예약내역 출력
             System.out.println("============= 예약내역 ===============");
-            System.out.println("예약번호\t\t예약날짜\t\t\t\t숙소이름\t\t예약인원\t\t예약상태");
+            System.out.println("예약번호\t\t예약날짜\t\t숙소이름\t\t예약인원\t\t예약상태");
             for (int i = 0; i < result.size(); i++) {
 
                 //예약상태 데이터 String으로 표기
@@ -80,7 +82,7 @@ public class GuestPageView {
                     reservationStatus="리뷰작성 완료";
                 }//if end
 
-                System.out.printf("%-10s %-10s %-10s\n",
+                System.out.printf("%-10s %-10s %-10s %-10s %-10s\n",
                         result.get(i).get("reservation_pk"),
                         result.get(i).get("reservation_date"),
                         result.get(i).get("houseName"),
