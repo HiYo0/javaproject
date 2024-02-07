@@ -14,7 +14,7 @@ public class DeleteMemberView {
     public static DeleteMemberView getInstance(){return DeleteMemberView;}
 
     // 회원탈퇴 메소드
-    public void deleteMemberView(){
+    public Boolean deleteMemberView(){
         // 입력
         System.out.print("아이디 : "); String mid = scanner.next();
         System.out.print("비밀번호 : "); String mpw = scanner.next();
@@ -32,8 +32,10 @@ public class DeleteMemberView {
         // 결과 출력
         if (result){
             System.out.println("<안내> 회원탈퇴 완료");
+
         }else {
             System.out.println("<안내> 회원탈퇴 실패");
         }
+        return result;
     } // DeleteMemberView e
 }// d e

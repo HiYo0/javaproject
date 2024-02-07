@@ -14,12 +14,13 @@ public class MainPageView {
             Scanner scanner = new Scanner(System.in);
 
 
-            //안내문구
-            System.out.println("== OO에 오신것을 환영합니다. 이용하실 서비스를 선택 해 주십시오. ==");
-            System.out.println("1.Host | 2.Guest | 3.마이페이지 | 4.로그아웃");
-            System.out.print("선택 : ");
+
 
             while (true) {
+                //안내문구
+                System.out.println("== OO에 오신것을 환영합니다. 이용하실 서비스를 선택 해 주십시오. ==");
+                System.out.println("1.Host | 2.Guest | 3.마이페이지 | 4.로그아웃");
+                System.out.print("선택 : ");
                 //입력
                 try {
                     int ch = scanner.nextInt();
@@ -29,7 +30,8 @@ public class MainPageView {
                     } else if (ch == 2) {//guest 페이지
                         GuestPageView.getInstance().run();
                     } else if (ch == 3) {//마이페이지
-                        MyPageView.getInstance().run();
+                        if(MyPageView.getInstance().run()) break;
+
                     } else if (ch == 4) {//로그아웃
                         System.out.println("로그아웃이 완료되었습니다.");
                         break;

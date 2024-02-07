@@ -15,9 +15,10 @@ public class HostPageView {
         // 스캐너 선언
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("1.숙소관리 | 2.리뷰관리 | 3.돌아가기");
+
 
         while (true){
+            System.out.println("1.숙소관리 | 2.리뷰관리 | 3.돌아가기");
 
             int ch = scanner.nextInt(); // 1.숙소관리 2. 리뷰관리 3. 돌아가기
 
@@ -25,7 +26,7 @@ public class HostPageView {
                 HostSubPageView.getInstance().run();
             }
             else if(ch == 2){
-
+                Host_Review_Command.getInstance().run();
             }
             else if(ch == 3){
                 break;

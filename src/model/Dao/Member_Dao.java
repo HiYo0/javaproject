@@ -78,29 +78,6 @@ public class Member_Dao extends Dao {//class start
     } // login e
 
 
-    // ================================ 아이디를 이용한 회원번호 찾기 ================================ //
-    // 로그인 상태 회원번호로 식별
-    public int findMno( String mid ){
-        try {
-            // SQL 작성
-            String sql = "select mno from member where mid = ?";
-            // SQL 기재
-            ps = conn.prepareStatement(sql);
-            // SQL 대입(? 매개변수 대입)
-            ps.setString(1, mid);
-            // SQL 실행.
-            rs = ps.executeQuery();
-            // SQL 결과
-            if (rs.next()) {
-                // rs.get타입( 호출할 필드번호 or 필드이름 ) : 현재 레코드의 필드 값 호출
-                return rs.getInt("mno");
-            }
-        }catch ( Exception e ){  System.out.println(e);   }
-        // 5. 함수종료
-        return 0;
-    }
-
-
     // ================================ 아이디 찾기 ================================ //
     public String SearchId (MemberDto memberDto){
         try {

@@ -31,16 +31,13 @@ public class Control_member {//class start
     }
 
     // ================================ 로그인 ================================ //
-    //  로그인 상태 필드 // Mno(회원번호)로 식별
-    int loginMno = 0;
+    //  로그인 상태 필드
 
     public boolean login(MemberDto memberDto){
         // 저장 후 dao에 전달
         boolean result = Member_Dao.getInstance().login(memberDto);
         if( result ){
             setLogin_id(memberDto.getMid());
-            // login 성공한 회원번호 dao 요청.
-            loginMno = Member_Dao.getInstance().findMno(  memberDto.getMid()  );
         }
         // 반환
         return result;

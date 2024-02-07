@@ -11,12 +11,13 @@ public class MainView {
 
     public void run(){
         Scanner scanner = new Scanner(System.in);
-        // 기능 선택하기
-        System.out.println("===============================================");
-        System.out.println("1.회원가입 | 2.로그인 | 3.아이디찾기 | 4.비밀번호찾기 ");
-        System.out.println("===============================================");
-        System.out.print("기능을 선택해 주세요(1~4) => ");
+
         while (true) {
+            // 기능 선택하기
+            System.out.println("===============================================");
+            System.out.println("1.회원가입 | 2.로그인 | 3.아이디찾기 | 4.비밀번호찾기 ");
+            System.out.println("===============================================");
+            System.out.print("기능을 선택해 주세요(1~4) => ");
 
             try {
             int ch = scanner.nextInt();

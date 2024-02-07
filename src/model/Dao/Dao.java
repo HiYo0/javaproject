@@ -23,7 +23,7 @@ public class Dao {
                     "root",
                     "1234"
             );
-            System.out.println("DB연동 성공");
+           // System.out.println("DB연동 성공");
         } catch (Exception e) {
             System.out.println("DB서버 연동오류남" + e);
         }

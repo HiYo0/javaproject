@@ -261,7 +261,7 @@ public class Host_Review_Command {//class start
 
                     // 전승호 =============================================================================
                 } else if (choice == 4) {//돌아가기
-                    break;
+                    return;
                 }else {
                     System.out.println("안내] 요청하신 번호는 없는 기능입니다.");
                     scanner.nextLine();
