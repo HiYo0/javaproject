@@ -5,6 +5,7 @@ import model.Dto.HouseDto;
 import model.Dto.ReservationDto;
 
 import java.lang.reflect.Array;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -244,6 +245,87 @@ public class Guest_Dao extends Dao{
         }
 
         return null;
+    }
+
+    public boolean insertReservation(ReservationDto reservationDto){
+        // reservation 테이블에 레코드 추가
+        // guest가 숙소를 예약하였을 때 발생
+        try {
+            int member_pk = 0;
+            String sql = "";
+            String id = Control_member.getInstance().getLogin_id();
+
+            // member 테이블에서 member_pk를 먼저 받아오기
+            sql = "select member_pk from member where mid = ?;";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                member_pk = rs.getInt("member_pk");
+            }
+
+            member_pk = 1;
+
+            sql = "insert into reservation(member_pk, reservation_people, reservation_status) values(?, ?, ?)";
+            ps = conn.prepareStatement( sql , Statement.RETURN_GENERATED_KEYS );
+            ps.setInt(1, member_pk);
+            ps.setInt(2, reservationDto.getReservation_people());
+            ps.setInt(3, 0);
+            if(ps.executeUpdate() == 1){
+
+                rs = ps.getGeneratedKeys();
+                if( rs.next() ){
+                    System.out.println( rs.getInt(1 ) );
+                }
+
+                return true;
+            }
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return false;
+    }
+
+    public boolean insertReservation_detail(ReservationDto reservationDto, int house_pk, String date, int day){
+        // reservation_detail 테이블에 레코드 추가
+        // guest가 숙소를 예약하였을 때 발생
+        try{
+            int reservation_pk = 0; int reservation_date_pk = 0;
+            String sql = "";
+
+            // 방금 등록된 예약에서 reservation_pk를 먼저 가져오기
+            sql = "select reservation_pk from reservation";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                reservation_pk = rs.getInt("reservation_pk");
+            }
+            System.out.println(reservation_pk);
+
+            sql = "select reservation_date_pk from reservation_date where house_pk = ? and reservation_date = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, house_pk);
+            ps.setString(2, date);
+            if (rs.next()){
+                reservation_date_pk = rs.getInt("reservation_date_pk");
+            }
+
+            sql = "insert into reservaion_detail(reservation_pk, reservation_date_pk) values(?, ?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, reservation_pk);
+            ps.setInt(2, reservation_date_pk);
+            if(ps.executeUpdate() == 1){
+                return true;
+            }
+
+
+        } catch (Exception e){
+            System.out.println("잘못 입력하셨습니다.");
+        }
+
+        return false;
     }
     // 승택 end ========================================================
 

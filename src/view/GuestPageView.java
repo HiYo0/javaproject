@@ -39,6 +39,7 @@ public class GuestPageView {
 
             if (ch == 1) {
                 searchHouse();
+
             } else if (ch == 2) {
                 reservationManagement();
             } else if (ch == 3) {
@@ -152,14 +153,16 @@ public class GuestPageView {
 
 
     // 승택 ================================================================
-    public void searchHouse(){
+    public void searchHouse(){ // 숙소를 검색하는 매소드
         System.out.println("1.지역만 선택하기 | 2.상세 조건 선택하기(지역, 날짜, 인원, 가격) : ");
         int ch = scanner.nextInt();
 
         if(ch == 1){
             System.out.println("지역 선택 : ");     String region = scanner.next();
             ArrayList<HashMap<String, String>> searchHouse = Control_Guest.getInstance().searchHouse(region);
-            outputHouse(region, searchHouse);
+            if(searchHouse.size()!=0) {
+                outputHouse(region, searchHouse);
+            }
         }
         else if(ch == 2){
             System.out.println("입실 날짜 : ");
@@ -170,11 +173,11 @@ public class GuestPageView {
         }
     }
 
-    public void outputHouse(String rigion, ArrayList<HashMap<String, String>> searchHouse){
-        System.out.println("============= 숙소내역 ===============");
-        System.out.println("no\t\t숙소이름\t\t지역\t\t최대인원\t\t\t\t날짜\t\t\t1박당가격");
+    public void outputHouse(String rigion, ArrayList<HashMap<String, String>> searchHouse){ // 등록된 숙소를 출력해주는 매소드
+        System.out.println("=============================== 숙소내역 =================================");
+        System.out.println("no\t\t숙소이름\t\t지역\t\t\t최대인원\t\t\t날짜\t\t\t\t1박당가격");
         for (int i = 0; i < searchHouse.size(); i++) {
-            System.out.printf("%-7s %-10s %-10s %-10s %10s %13s\n",
+            System.out.printf("%-7s %-10s %-10s %-10s %10s %15s\n",
                     (i+1),
                     searchHouse.get(i).get("houseName"),
                     searchHouse.get(i).get("region"),
@@ -182,7 +185,33 @@ public class GuestPageView {
                     searchHouse.get(i).get("reservation_date"),
                     searchHouse.get(i).get("day_price"));
         }//for end
-        System.out.println("=====================================");
+        System.out.println("=========================================================================");
+        System.out.println("어떤 숙소를 예약하시겠습니까?(no) : ");  int houseNo = scanner.nextInt();
+        int house_pk = Integer.parseInt(searchHouse.get(houseNo-1).get("house_pk"));
+        reserveHouse(house_pk);
+    }
+
+    public void reserveHouse(int house_pk){
+        boolean result = false;
+
+        try {
+            System.out.println("입실 날짜(0000-00-00) : ");        String date = scanner.next();
+            System.out.println("몇박 하시겠습니까? : ");            int day = scanner.nextInt();
+            System.out.println("인원 : ");                        int people = scanner.nextInt();
+            System.out.println("정말 예약하시겠습니까? (1:예 2:아니오) : "); int real = scanner.nextInt();
+
+            ReservationDto reservationDto = new ReservationDto(0, 0, people, 0);
+
+            result = Control_Guest.getInstance().insertReservation(reservationDto, house_pk, date, day);
+
+            if (result) {
+                System.out.println("예약이 완료되었습니다.");
+            } else {
+                System.out.println("예약에 실패하셨습니다.");
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
     // 승택 end ============================================================
 }//c end

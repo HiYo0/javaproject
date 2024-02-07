@@ -76,4 +76,15 @@ public class Control_Guest {//class start
     }
     // 승택 end =======================================================
 
+    public boolean insertReservation(ReservationDto reservationDto, int house_pk, String date, int day){
+
+        boolean result = Guest_Dao.getInstance().insertReservation(reservationDto);
+        if(result){
+            if(Guest_Dao.getInstance().insertReservation_detail(reservationDto, house_pk, date, day)){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }//class end
