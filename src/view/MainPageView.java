@@ -41,6 +41,7 @@ public class MainPageView {
                 } catch (Exception e) {
                     System.out.println("올바르지 않은 입력입니다.");
                     System.out.println(e);
+                    scanner.nextLine();
                 }
             }//w end
         }//m end

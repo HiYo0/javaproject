@@ -21,15 +21,6 @@ public class GuestPageView {
     //scanner 객체 생성
     Scanner scanner=new Scanner(System.in);
 
-    //test용 main메소드
-    public static void main(String[] args) {
-        System.out.print("아이디(임시)test용 : ");
-        String id=GuestPageView.getInstance().scanner.next();
-        Control_member.getInstance().setLogin_id(id);
-
-        GuestPageView.getInstance().run();
-    }
-
     //실행 메소드
     public void run(){
         while (true) {
@@ -154,6 +145,7 @@ public class GuestPageView {
             }//t end
             catch (Exception e) {
                 System.out.println("올바르지 않은 입력입니다. : " + e);
+                scanner.nextLine();
             }
         }//while end
     }//m end
@@ -218,6 +210,7 @@ public class GuestPageView {
             }
         }catch (Exception e){
             System.out.println(e);
+            scanner.nextLine();
         }
     }
     // 승택 end ============================================================
