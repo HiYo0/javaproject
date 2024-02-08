@@ -164,7 +164,7 @@ public class Host_Dao extends Dao{// class start
 
         try {
             // 1. sql 작성한다
-            String sql = "select * from reservation_detail inner join reservation_date inner join reservation inner join house inner join member where reservation.reservation_status=0 && house.member_pk="+member_pk+" && house.member_pk = member.member_pk && reservation.reservation_pk=reservation_detail.reservation_detail_pk ;";
+            String sql = "select * from reservation_detail inner join reservation_date inner join reservation inner join house inner join member where reservation.reservation_status=0 and house.member_pk="+member_pk+" and house.member_pk = member.member_pk and reservation.reservation_pk=reservation_detail.reservation_detail_pk and reservation_detail.reservation_date_pk = reservation_date.reservation_date_pk;";
             // 2. sql 기재한다
             ps = conn.prepareStatement(sql);
             // 3. sql 실행한다.

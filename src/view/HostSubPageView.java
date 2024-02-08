@@ -219,7 +219,10 @@ public class HostSubPageView {
         Scanner scanner = new Scanner(System.in);
         ArrayList<ReservationVIewDto> 리스트 = reservationAcceptView();
         try {
-            if(리스트.isEmpty())return false;
+            if(리스트.isEmpty()) {
+                System.out.println("승인대기인 예약이 없습니다.");
+                return false;
+            }
             System.out.println("\t없는번호 또는 문자입력시 이전작업으로 돌아갑니다.");
             System.out.print("수락하실 번호를 선택해주세요 > ");
             int 선택번호 = scanner.nextInt();
