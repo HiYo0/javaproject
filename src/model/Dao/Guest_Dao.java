@@ -76,7 +76,6 @@ public class Guest_Dao extends Dao{
                 reservationList.put("reservation_date",String.valueOf( rs.getString( "reservation_date") ));
                 reservationList.put("reservation_people",String.valueOf( rs.getInt( "reservation_people") ));
                 reservationList.put("reservation_status",String.valueOf( rs.getInt("reservation_status") ));
-                System.out.println(reservationList);
 
                 //ArrayList에 저장
                 reservationDtos.add(reservationList);
@@ -184,16 +183,16 @@ public class Guest_Dao extends Dao{
             rs=ps.executeQuery();
 
             //결과 반환
-            if(!rs.next()){  //리뷰 없으면 0 반환
-                return 0;
-            }//if end
-            //평균 저장
             float scoreAvg=0; //평균 저장 변수
             int i=0;        //리뷰개수 저장 변수
             while(rs.next()){
                 scoreAvg+=rs.getInt(1);
                 i++;
             }//w end
+            //리뷰 없으면 0 출력
+            if(i==0){
+                return 0;
+            }
             return scoreAvg/i;
         }
         catch(Exception e){

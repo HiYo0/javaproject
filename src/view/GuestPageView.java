@@ -57,15 +57,17 @@ public class GuestPageView {
         while(true) {
             ArrayList<HashMap<String, String>> result = Control_Guest.getInstance().reservationList();
 
+            System.out.println("--------------------------------- 예약내역 ---------------------------------");
+
             //배열에 아무것도 저장되지 않을경우 안내문구 출력
             if(result==null){
                 System.out.println("예약내역이 없습니다.");
+                System.out.println("----------------------------------------------------------------------");
                 return;
             }//if end
 
             //예약내역 출력
-            System.out.println("============= 예약내역 ===============");
-            System.out.println("예약번호\t\t예약날짜\t\t숙소이름\t\t예약인원\t\t예약상태");
+            System.out.println("예약번호\t\t\t예약날짜\t\t\t숙소이름\t\t\t예약인원\t\t\t예약상태");
             for (int i = 0; i < result.size(); i++) {
 
                 //예약상태 데이터 String으로 표기
@@ -83,7 +85,7 @@ public class GuestPageView {
                     reservationStatus="리뷰작성 완료";
                 }//if end
 
-                System.out.printf("%-10s %-10s %-10s %-10s %-10s\n",
+                System.out.printf("%-15s %-15s %-12s %-15s %-10s\n",
                         result.get(i).get("reservation_pk"),
                         result.get(i).get("reservation_date"),
                         result.get(i).get("houseName"),
@@ -91,11 +93,12 @@ public class GuestPageView {
                         reservationStatus);
 
             }//for end
-            System.out.println("=====================================");
+            System.out.println("---------------------------------------------------------------------------");
 
             try {
                 //예약 관리
-                System.out.print("1.예약취소 | 2.돌아가기 : ");
+                System.out.println("1.예약취소 | 2.돌아가기");
+                System.out.print("선택 : ");
                 //콘솔 입력
                 int ch = scanner.nextInt();
 
@@ -113,7 +116,9 @@ public class GuestPageView {
                         continue;
                     }//if end--------------------------------------------
 
-                    System.out.print("정말 취소하시겠습니까? 1.예 | 2.아니오 : ");
+                    System.out.println("정말 취소하시겠습니까? 1.예 | 2.아니오");
+                    System.out.print("선택 : ");
+
                     int check = scanner.nextInt();
 
                     //취소 진행(예약상태=2(취소)로 변경)
