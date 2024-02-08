@@ -38,7 +38,7 @@ public class GuestPageView {
             System.out.print("선택 : ");
             int ch = scanner.nextInt();
 
-            if (ch == 1) {
+            if (ch == 1) {//숙소검색
                 searchHouse();
 
             } else if (ch == 2) {
@@ -172,8 +172,9 @@ public class GuestPageView {
             }
         }
         else if(ch == 2){
-            System.out.println("입실 날짜 : ");
-            System.out.println("몇박 하시겠습니까?");
+            System.out.println("\n안내]준비중인 기능입니다.\n" );
+            // System.out.println("입실 날짜 : ");
+            // System.out.println("몇박 하시겠습니까?");
         }
         else{
             System.out.println("잘못 입력하셨습니다.");

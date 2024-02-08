@@ -36,7 +36,8 @@ public class HostSubPageView {
                 } else if (ch == 3) { // 숙소삭제
                     deleteHouse();
                 } else if (ch == 4) {// 예약승인
-                    reservationAccept();
+                    System.out.println("\n안내] 구현 준비중인 기능입니다.\n");
+                    //reservationAccept();
                 } else if (ch == 5) {// 돌아가기
                     break;
                 } else {
