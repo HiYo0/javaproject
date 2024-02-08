@@ -164,7 +164,13 @@ public class Host_Dao extends Dao{// class start
 
         try {
             // 1. sql 작성한다
-            String sql = "select * from reservation_detail inner join reservation_date inner join reservation inner join house inner join member where reservation.reservation_status=0 and house.member_pk="+member_pk+" and house.member_pk = member.member_pk and reservation.reservation_pk=reservation_detail.reservation_detail_pk and reservation_detail.reservation_date_pk = reservation_date.reservation_date_pk;";
+            String sql = "select reservation_pk, house_pk, reservation_date, member_pk from reservation join\n" +
+                    "(select * from reservation_detail join\n" +
+                    "(select * from reservation_date join\n" +
+                    "(select house_pk, houseName from house where member_pk="+member_pk+")as a\n" +
+                    "using(house_pk))as b\n" +
+                    "using(reservation_date_pk)) as c\n" +
+                    "using(reservation_pk) where reservation_status=0;";
             // 2. sql 기재한다
             ps = conn.prepareStatement(sql);
             // 3. sql 실행한다.
@@ -173,10 +179,10 @@ public class Host_Dao extends Dao{// class start
 
             while (rs.next()){//DB house 데이터 다 가져오기
                 ReservationVIewDto reservationVIewDto = new ReservationVIewDto();
-                reservationVIewDto.setReservation_pk(rs.getInt(8));
-                reservationVIewDto.set집이름(rs.getString(13));
-                reservationVIewDto.set날짜(rs.getString(5));
-                reservationVIewDto.set신청자이름(Review_Dao.getInstance().member_name(rs.getInt(9)));
+                reservationVIewDto.setReservation_pk(rs.getInt("reservation_pk"));
+                reservationVIewDto.set집이름(Review_Dao.getInstance().house_name(rs.getInt("house_pk")));
+                reservationVIewDto.set날짜(rs.getString("reservation_date"));
+                reservationVIewDto.set신청자이름(Review_Dao.getInstance().member_name(rs.getInt("member_pk")));
 
                 my_reservationList.add(reservationVIewDto);
             }
