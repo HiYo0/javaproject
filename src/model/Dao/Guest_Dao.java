@@ -537,7 +537,7 @@ public class Guest_Dao extends Dao{
                 member_pk = rs.getInt("member_pk");
             }
 
-            member_pk = 1;
+            // member_pk = 1;
 
             sql = "insert into reservation(member_pk, reservation_people, reservation_status) values(?, ?, ?)";
             ps = conn.prepareStatement( sql , Statement.RETURN_GENERATED_KEYS );
