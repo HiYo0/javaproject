@@ -1,9 +1,7 @@
 package controller;
 
 import model.Dao.Host_Dao;
-import model.Dto.HouseDto;
-import model.Dto.HouseFixDto;
-import model.Dto.Reservation_dateDto;
+import model.Dto.*;
 
 import java.util.ArrayList;
 
@@ -47,6 +45,16 @@ public class Control_Host {//class start
 /// 삭제하기
     public boolean deleteHouse(int house_pk){
         return Host_Dao.getInstance().deleteHouse(house_pk);
+    }
+/// 예약수락하기
+    // 예약수락 - 출력
+    public ArrayList<ReservationVIewDto> reservationAcceptView(){
+        return Host_Dao.getInstance().reservationAcceptView();
+    }
+    // 예약선택번호 상태수정
+    public boolean updateStatus(int reservation_pk){
+        boolean result = Host_Dao.getInstance().updateStatus(reservation_pk);
+        return result;
     }
 
 ////////////////////////////////////

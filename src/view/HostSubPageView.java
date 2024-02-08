@@ -2,9 +2,7 @@ package view;
 
 import controller.Control_Host;
 import controller.Control_member;
-import model.Dto.HouseDto;
-import model.Dto.HouseFixDto;
-import model.Dto.Reservation_dateDto;
+import model.Dto.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -26,9 +24,10 @@ public class HostSubPageView {
 
         while (true){
             try {
-                System.out.println("1.숙소등록 | 2.숙소수정 | 3.숙소삭제 | 4.돌아가기");
+                houseView();
+                System.out.println("1.숙소등록 | 2.숙소수정 | 3.숙소삭제 | 4.예약승인 | 5.돌아가기");
                 System.out.print("선택 > ");
-                int ch = scanner.nextInt(); // 1.숙소등록 | 2.숙소수정 | 3.숙소삭제 | 4.돌아가기
+                int ch = scanner.nextInt(); // 1.숙소등록 | 2.숙소수정 | 3.숙소삭제 | 4.예약승인 | 5. 돌아가기
 
                 if (ch == 1) { // 숙소등록
                     insertHouse();
@@ -36,7 +35,9 @@ public class HostSubPageView {
                     updateHouse();
                 } else if (ch == 3) { // 숙소삭제
                     deleteHouse();
-                } else if (ch == 4) {// 돌아가기
+                } else if (ch == 4) {// 예약승인
+                    reservationAccept();
+                } else if (ch == 5) {// 돌아가기
                     break;
                 } else {
                     System.out.println("잘못 입력하셨습니다.");
@@ -56,7 +57,7 @@ public class HostSubPageView {
             // 2. 식별번호로 등록된 HouseDto 반환받아와서 출력하기
             // 3. 하우스 리스트 반환
         String id = Control_member.getInstance().getLogin_id();
-        System.out.println("======================= 내가 등록한 숙소 =======================");
+        System.out.println("\n\n======================= 내가 등록한 숙소 =======================");
         System.out.printf(" %2s\t%-12s %-15s %-4s \t\t%2s\n","번호","식별번호","이름","지역","최대인원");
         // 로그인한 id 주고 그에대한 house 정보 가져오기
         ArrayList<HouseDto> my_house_list = Control_Host.getInstance().my_house_list(id);
@@ -119,7 +120,7 @@ public class HostSubPageView {
         int 수정선택번호 = 0;
 
         if (!houseFixDtos.isEmpty()) {
-            System.out.println("======================= " + houseFixDtos.get(0).getHouseName() + " =======================");
+            System.out.println("======================= 숙소이름 : " + houseFixDtos.get(0).getHouseName() + " =================");
             System.out.printf(" %2s\t%-12s %-8s %-4s \t\t%2s\n", "번호", "날짜", "가격", "지역", "최대인원");
             for (int i = 0; i < houseFixDtos.size(); i++) {
                 String 날짜 = houseFixDtos.get(i).getReservation_date();
@@ -211,10 +212,59 @@ public class HostSubPageView {
                 System.out.println("안내] 숫자로 입력해주세요! ");
             }
         }//while end
+    }// dereteHouse method End
+/// 예약승인
+    // 예약승인 메인 메소드
+    public boolean reservationAccept(){
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<ReservationVIewDto> 리스트 = reservationAcceptView();
+        try {
+            if(리스트.isEmpty())return false;
+            System.out.println("\t없는번호 또는 문자입력시 이전작업으로 돌아갑니다.");
+            System.out.print("수락하실 번호를 선택해주세요 > ");
+            int 선택번호 = scanner.nextInt();
+            if(선택번호>리스트.size()+1||선택번호<0){
+                // 번호선택 유효성검사 없는번호 선택시 종료
+                System.out.println("\n안내]없는번호를 입력하셧습니다.\n");
+                scanner.nextLine();
+                return false;
+            }
+            // 예약 DB 상태 1로 수정하기
+            if(Control_Host.getInstance().updateStatus(리스트.get(선택번호-1).getReservation_pk())){
+                System.out.println("\n안내] 예약수락이 완료되었습니다.\n");
+            }else{System.out.println("\n안내] 예약수락 작업을 실패했습니다.\n");}
 
+            return true;
 
+        }catch (InputMismatchException e){
+            System.out.println("\n안내] 문자가 입력되었습니다.\n");
+            scanner.nextLine();
+            return false;
+        }
+    }// reservationAccept method End
 
-    }// dereteHouse method end
+    // 예약 신청받은거 출력메소드
+    public ArrayList<ReservationVIewDto> reservationAcceptView(){
+        // reservation 에서 나의 아이디에 해당하는 예약리스트를 가져옴
+        ArrayList<ReservationVIewDto> my_reservationList =Control_Host.getInstance().reservationAcceptView();
+        if(!my_reservationList.isEmpty()) {
+            System.out.println("\n\n==================== 예약신청 받은 숙소 ============================");
+            System.out.printf(" %2s\t%-10s %-10s %-4s \n", "번호", "집이름", "날짜", "신청자이름");
+            for (int i = 0; i < my_reservationList.size(); i++) {
+                String 집이름 =my_reservationList.get(i).get집이름();
+                String 날짜 = my_reservationList.get(i).get날짜() ;
+                String 신청자이름 = my_reservationList.get(i).get신청자이름();
+
+                System.out.printf(" %2d\t%-10s%-10s \t%-5s \n", i+1, 집이름, 날짜, 신청자이름);
+            }
+            System.out.println("===================================================================");
+            return my_reservationList;
+        }else {
+            System.out.println("\n안내] 신청받은 숙소예약이 없습니다.\n");
+
+        }
+        return my_reservationList;
+    }// reservationAcceptView method End
 
 
     // 전승호End ==========================================================================

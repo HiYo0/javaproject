@@ -32,7 +32,7 @@ public class JoinView {
 
         // 저장 후 control에 전달
         int result = Control_member.getInstance().join(memberDto);
-        System.out.println(" = " +memberDto );
+        // System.out.println(" = " +memberDto );
 
 
         // 결과 출력

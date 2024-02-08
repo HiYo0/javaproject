@@ -65,7 +65,7 @@ public class Review_Dao extends Dao{//class start
         return "";
     }
 
-    // 작성자 식별번호 -> 이름으로 반환
+    // 작성자 식별번호(회원번호) -> 이름으로 반환
     public String member_name(int writer){
         try {
             String sql = "select * from member where member_pk = "+writer+";";

@@ -1,9 +1,7 @@
 package model.Dao;
 
 import controller.Control_member;
-import model.Dto.HouseDto;
-import model.Dto.HouseFixDto;
-import model.Dto.Reservation_dateDto;
+import model.Dto.*;
 
 import java.util.ArrayList;
 
@@ -153,6 +151,54 @@ public class Host_Dao extends Dao{// class start
 
         }catch (Exception e){
             System.out.println(e+"deleteHouse");
+        }
+        return false;
+    }
+/// 수락하기
+    // 수락하기 - 출력
+    public ArrayList<ReservationVIewDto>reservationAcceptView(){
+        ArrayList<ReservationVIewDto> my_reservationList = new ArrayList<>();
+
+        // 로그인 ID 로 회원번호 반환
+        int member_pk = login_number(Control_member.getInstance().getLogin_id());
+
+        try {
+            // 1. sql 작성한다
+            String sql = "select * from reservation_detail inner join reservation_date inner join reservation inner join house inner join member where reservation.reservation_status=0 && house.member_pk="+member_pk+" && house.member_pk = member.member_pk && reservation.reservation_pk=reservation_detail.reservation_detail_pk ;";
+            // 2. sql 기재한다
+            ps = conn.prepareStatement(sql);
+            // 3. sql 실행한다.
+            rs = ps.executeQuery();
+            // 4. sql 결과처리
+
+            while (rs.next()){//DB house 데이터 다 가져오기
+                ReservationVIewDto reservationVIewDto = new ReservationVIewDto();
+                reservationVIewDto.setReservation_pk(rs.getInt(8));
+                reservationVIewDto.set집이름(rs.getString(13));
+                reservationVIewDto.set날짜(rs.getString(5));
+                reservationVIewDto.set신청자이름(Review_Dao.getInstance().member_name(rs.getInt(9)));
+
+                my_reservationList.add(reservationVIewDto);
+            }
+
+            return my_reservationList;
+        }catch (Exception e){
+            System.out.println("reservationAcceptView 오류"+e);
+        }
+
+
+        return my_reservationList;
+    }
+    // 예약선택번호 상태수정
+    public boolean updateStatus(int reservation_pk){
+        try{
+            String sql = "update reservation set reservation_status = 1 where reservation_pk ="+reservation_pk+";";
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+            return true;
+
+        }catch (Exception e){
+            System.out.println(e+"updateStatus");
         }
         return false;
     }

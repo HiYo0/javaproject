@@ -150,8 +150,8 @@ public class Host_Review_Command {//class start
                                 break;
                             }
                         } catch (InputMismatchException e) {
-                            System.out.println("숫자입력해주세요");
-                            scanner.next();
+                            System.out.println("안내] 숫자입력해주세요");
+                            scanner.nextLine();
                         }
                     }// 한글 입력시 예외처리 하기위한 while end
 
@@ -246,6 +246,7 @@ public class Host_Review_Command {//class start
                                 } else {
                                     System.out.println("안내] 선택하신 번호에 해당하는 리뷰가 없습니다. ");
                                     System.out.println("\n   다시 선택해주세요. ");
+                                    scanner.nextLine();
                                     break;
                                 }
                             }//while end
