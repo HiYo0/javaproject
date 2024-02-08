@@ -51,24 +51,29 @@ public class GuestReviewView {
     //내게 쓴 리뷰 출력
     public void myReview(){
         ArrayList<HashMap<String, String>> myReview=Control_Guest.getInstance().myReview();
+
+
         if(myReview.size()==0){//내게 써진 리뷰가 없을경우
+            System.out.println("받은 리뷰가 없습니다.");
+            System.out.println("-------------------------------------------------------------------------");
             return;
         }
-        System.out.println("------------ 받은 리뷰 ------------");
         //평균평점 출력
         float scoreAvg=Control_Guest.getInstance().scoreAvg();    //평균평점 저장변수
+        System.out.println("-------------------");
         System.out.print("내 평균 평점 : ");
         System.out.printf("%.1f \n",scoreAvg);
 
         //리뷰 리스트 출력
-        System.out.println("작성자\t\t내용\t\t\t평점");
+        System.out.println("-------------------------------- 받은 리뷰 --------------------------------");
+        System.out.println("작성자\t\t\t  내용\t\t\t\t\t   평점");
         for(int i=0; i<myReview.size(); i++){
-            System.out.printf("%-10s %-20s %-5s\n",
+            System.out.printf("%-15s %-20s %-5s\n",
                     myReview.get(i).get("houseName")+"***",
                     myReview.get(i).get("content"),
                     myReview.get(i).get("score"));
         }//for end
-        System.out.println("----------------------------------");
+        System.out.println("-------------------------------------------------------------------------");
     }//m end
 
     //리뷰등록 메소드
@@ -134,26 +139,7 @@ public class GuestReviewView {
     //내가 등록한 리뷰 수정 메소드
     public void updateReview(){
         //내가 쓴 리뷰 출력
-        ArrayList<HashMap<String, String>> printWriteReview=Control_Guest.getInstance().printWriteReview();
-
-        //출력
-        System.out.println("------------ 내가 쓴 리뷰 ------------");
-        //만약 배열이 없다면 return
-        if(printWriteReview.size()==0){
-            System.out.println("내가 쓴 리뷰가 없습니다.");
-            System.out.println("------------------------------------");
-            return;
-        }
-
-        System.out.println("리뷰번호\t\t숙소이름\t\t내용\t\t\t평점");
-        for(int i=0; i<printWriteReview.size(); i++){
-            System.out.printf("%-5s %-10s %-20s %-5s\n",
-                    printWriteReview.get(i).get("review_pk"),
-                    printWriteReview.get(i).get("houseName"),
-                    printWriteReview.get(i).get("content"),
-                    printWriteReview.get(i).get("score"));
-        }//for end
-        System.out.println("------------------------------------");
+        printWriteReview();
 
         //수정할 리뷰번호 입력
         System.out.print("수정할 리뷰번호를 입력 : ");
@@ -161,7 +147,7 @@ public class GuestReviewView {
         scanner.nextLine();
 
         //수정할 내용 입력
-        System.out.print("새로운 내용 :");
+        System.out.print("새로운 내용 : ");
             String content=scanner.nextLine();
         System.out.print("새로운 평점(소수점은 적용되지 않습니다.) :");
             int score=scanner.nextInt();
@@ -176,6 +162,7 @@ public class GuestReviewView {
         boolean result=Control_Guest.getInstance().updateReview(guestReviewDto);
         if(result){
             System.out.println("리뷰수정이 완료되었습니다.");
+            printWriteReview();
         }
         else{
             System.out.println("[오류] 리뷰등록이 불가능한 리뷰번호입니다.");
@@ -185,26 +172,7 @@ public class GuestReviewView {
     //리뷰 삭제 메소드
     public void deleteReview(){
         //내가 쓴 리뷰 출력
-        ArrayList<HashMap<String, String>> printWriteReview=Control_Guest.getInstance().printWriteReview();
-
-        //출력
-        System.out.println("------------ 내가 쓴 리뷰 ------------");
-        //만약 배열이 없다면 return
-        if(printWriteReview.size()==0){
-            System.out.println("내가 쓴 리뷰가 없습니다.");
-            System.out.println("------------------------------------");
-            return;
-        }
-
-        System.out.println("리뷰번호\t\t숙소이름\t\t내용\t\t\t평점");
-        for(int i=0; i<printWriteReview.size(); i++){
-            System.out.printf("%-5s %-10s %-20s %-5s\n",
-                    printWriteReview.get(i).get("review_pk"),
-                    printWriteReview.get(i).get("houseName"),
-                    printWriteReview.get(i).get("content"),
-                    printWriteReview.get(i).get("score"));
-        }//for end
-        System.out.println("------------------------------------");
+        printWriteReview();
 
         //삭제할 리뷰번호 입력
         System.out.print("삭제할 리뷰번호를 입력 : ");
@@ -222,11 +190,36 @@ public class GuestReviewView {
         //출력
         if(result){
             System.out.println("리뷰삭제가 완료되었습니다.");
+            printWriteReview();
         }
         else{
             System.out.println("[오류] 리뷰삭제가 불가능한 리뷰번호입니다.");
         }//if end
     }//m end
+
+    public void printWriteReview(){
+        //내가 쓴 리뷰 출력
+        ArrayList<HashMap<String, String>> printWriteReview=Control_Guest.getInstance().printWriteReview();
+
+        //출력
+        System.out.println("-------------------------------- 내가 쓴 리뷰 --------------------------------");
+        //만약 배열이 없다면 return
+        if(printWriteReview.size()==0){
+            System.out.println("내가 쓴 리뷰가 없습니다.");
+            System.out.println("----------------------------------------------------------------------------");
+            return;
+        }
+
+        System.out.println("리뷰번호\t 숙소이름\t   내용\t\t\t\t\t평점");
+        for(int i=0; i<printWriteReview.size(); i++){
+            System.out.printf("%-7s  %-10s %-20s %-5s\n",
+                    printWriteReview.get(i).get("review_pk"),
+                    printWriteReview.get(i).get("houseName"),
+                    printWriteReview.get(i).get("content"),
+                    printWriteReview.get(i).get("score"));
+        }//for end
+        System.out.println("----------------------------------------------------------------------------");
+    }
 
 
 }//c end
