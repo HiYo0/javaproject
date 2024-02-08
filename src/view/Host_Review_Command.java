@@ -76,7 +76,7 @@ public class Host_Review_Command {//class start
         String house_name = Control_Review.getInstance().house_name(ch);
 
 
-        System.out.println("\n\n==========================="+house_name+" 에 등록된 리뷰"+"=============================");
+        System.out.println("\n\n=========================== 우리집에 등록된 리뷰"+"=============================");
         System.out.println("평균 평점 ="+score);
         System.out.printf(" %2s\t %-15s    %-29s \t %2s\n","번호","작성자","내용","평점");
         for (int i = 0; i < my_house_Review.size(); i++) {
